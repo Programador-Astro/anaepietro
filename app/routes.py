@@ -48,29 +48,29 @@ def pagar():
         if not nome or not email or not cpf or not items:
             return jsonify({"error": "Dados incompletos."}), 400
 
-        reference_id = str(uuid.uuid4())
         TOKEN = os.getenv('TOKEN')
         url_api = "https://sandbox.api.pagseguro.com/checkouts"
-        print(TOKEN, "============================================")
+
         headers = {
             "Authorization": f"Bearer {TOKEN}",
             "Content-Type": "application/json"
         }
 
         # ===============================
-        # Estrutura correta dos itens
+        # Estrutura dos itens
         # ===============================
         payload_items = []
         for i, item in enumerate(items, start=1):
             payload_items.append({
-                "reference_id": f"{reference_id}-{i}",
                 "name": item.get("name", f"Item {i}"),
                 "quantity": int(item.get("quantity", 1)),
                 "unit_amount": int(item.get("unit_amount", 0))
             })
 
+        # ===============================
+        # Payload principal
+        # ===============================
         payload = {
-            "reference_id": reference_id,
             "customer": {
                 "name": nome,
                 "email": email,
@@ -81,27 +81,30 @@ def pagar():
             "redirect_url": f"https://anavitoriaepietro.onrender.com/comentar/{token}"
         }
 
-        print("📤 Enviando payload ao PagBank:", payload)
+        print("📤 Enviando payload ao PagBank:", json.dumps(payload, indent=2, ensure_ascii=False))
 
+        # ===============================
+        # Envia ao PagBank
+        # ===============================
         resp = requests.post(url_api, headers=headers, json=payload)
         resp.raise_for_status()
         resp_json = resp.json()
-        print("📥 Retorno da API PagBank:", resp_json)
+        print("📥 Retorno da API PagBank:", json.dumps(resp_json, indent=2, ensure_ascii=False))
+
+        # Extrair informações importantes
+        order_id = resp_json.get("id")              # ID oficial do PagBank
+        charge_id = None
+        status = "PENDENTE"
+
+        if resp_json.get("charges"):
+            charge_id = resp_json["charges"][0].get("id")
+            status = resp_json["charges"][0].get("status", "PENDENTE")
 
         # Extrair link de pagamento (rel="PAY")
         link_checkout = next(
             (link["href"] for link in resp_json.get("links", []) if link.get("rel") == "PAY"),
             None
         )
-
-        order_id = resp_json.get("id")
-        charge_id = None
-        status = "PENDENTE"
-
-        # Se houver charge criada, pega ID e status
-        if resp_json.get("charges"):
-            charge_id = resp_json["charges"][0].get("id")
-            status = resp_json["charges"][0].get("status", "PENDENTE")
 
         if not link_checkout:
             return jsonify({"error": "Link de checkout não encontrado"}), 500
@@ -116,16 +119,17 @@ def pagar():
             presente=f"{len(items)} itens",
             valor=total,
             status=status,
-            id_pagbank=order_id,
-            token=token,
+            id_pagbank=order_id,    # ← agora o próprio código do PagBank é salvo
             charge_id=charge_id,
+            token=token,
             items=json.dumps(items, ensure_ascii=False)
         )
 
         db.session.add(novo_pagamento)
         db.session.commit()
 
-        print(f"✅ Pagamento criado ID {novo_pagamento.id} | Checkout: {link_checkout}")
+        print(f"✅ Pagamento criado | ID interno: {novo_pagamento.id} | PagBank: {order_id}")
+
         return jsonify({
             "checkout_url": link_checkout,
             "pagamento_id": novo_pagamento.id,
@@ -174,56 +178,83 @@ def cancelado():
 @app.route('/notificacaopagbank', methods=['POST'])
 def notificacao_pagbank():
     """
-    Recebe notificações do PagBank, atualiza o pagamento e envia o token por e-mail.
+    Recebe notificações do PagBank, atualiza o pagamento no banco
+    e envia o token por e-mail quando o pagamento for confirmado.
     """
     try:
         payload = request.get_json(silent=True) or {}
         headers = dict(request.headers)
+        print("📬 Notificação recebida do PagBank:", json.dumps(payload, indent=2, ensure_ascii=False))
 
-        # Guarda a notificação completa no banco (auditoria)
+        # ======================================================
+        # 1️⃣ Salva tudo no banco (auditoria)
+        # ======================================================
         notificacao = NotificacaoPagBank(payload=payload, headers=headers)
         db.session.add(notificacao)
         db.session.commit()
 
-        # Extrai o reference_id do pagamento
-        reference_id = None
-        try:
-            items = payload.get("items", [])
-            if items:
-                reference_id = items[0].get("reference_id")
-        except Exception as e:
-            print("⚠️ Erro ao extrair reference_id:", e)
+        # ======================================================
+        # 2️⃣ Extrai o ID oficial do PagBank
+        # ======================================================
+        order_id = payload.get("id")  # ← agora é o ID real, ex: "ORD-123456789"
+        novo_status = None
+        if payload.get("charges"):
+            novo_status = payload["charges"][0].get("status", "PENDING")
+        else:
+            novo_status = payload.get("status", "PENDING")
 
-        if reference_id:
-            pagamento = Pagamento.query.filter_by(id_pagbank=reference_id).first()
+        # ======================================================
+        # 3️⃣ Atualiza o pagamento correspondente
+        # ======================================================
+        if order_id:
+            pagamento = Pagamento.query.filter_by(id_pagbank=order_id).first()
+
             if pagamento:
-                novo_status = payload.get("charges", [{}])[0].get("status", "PENDENTE")
-                customer = payload.get("customer", {})
-
                 pagamento.status = novo_status
-                pagamento.nome_pagbank = customer.get("name")
-                pagamento.email_pagbank = customer.get("email")
-                db.session.commit()
 
-                # Se o pagamento foi confirmado, envia o token
-                if novo_status == 'PAID':
+                # Atualiza dados do cliente se existirem
+                customer = payload.get("customer", {})
+                if customer:
+                    pagamento.nome_pagbank = customer.get("name")
+                    pagamento.email_pagbank = customer.get("email")
+
+                db.session.commit()
+                print(f"🔄 Pagamento {order_id} atualizado para status: {novo_status}")
+
+                # ======================================================
+                # 4️⃣ Se foi pago, envia o e-mail com o token
+                # ======================================================
+                if novo_status.upper() == "PAID":
                     assunto = "🎉 Pagamento confirmado!"
                     mensagem_html = f"""
-                        <h2>Olá!</h2>
+                        <h2>Olá, {pagamento.nome or 'amigo(a)'}!</h2>
                         <p>Seu presente foi recebido com sucesso 💖</p>
                         <p>Use este token para comentar: <b>{pagamento.token}</b></p>
                         <p>Obrigado por participar desse momento especial!</p>
                         <p><strong>Ana & Pietro</strong></p>
                     """
-                    enviar_email(pagamento.email_pagbank, assunto, mensagem_html)
-            else:
-                print(f"⚠️ Nenhum pagamento encontrado para {reference_id}")
+                    try:
+                        enviar_email(pagamento.email_pagbank or pagamento.email_site, assunto, mensagem_html)
+                        print(f"📧 E-mail de confirmação enviado para {pagamento.email_pagbank or pagamento.email_site}")
+                    except Exception as e:
+                        print("⚠️ Erro ao enviar e-mail:", e)
 
+            else:
+                print(f"⚠️ Nenhum pagamento encontrado para o order_id: {order_id}")
+
+        else:
+            print("⚠️ Notificação sem campo 'id' (order_id). Payload incompleto?")
+
+        # ======================================================
+        # 5️⃣ Sempre retorna 200 (exigido pelo PagBank)
+        # ======================================================
         return jsonify({"message": "Notificação processada com sucesso"}), 200
 
     except Exception as e:
         print("❌ Erro em /notificacaopagbank:", e)
-        return jsonify({"error": str(e)}), 200  # PagBank exige 200 mesmo com erro
+        traceback.print_exc()
+        # Mesmo com erro, o PagBank exige status 200 para não reenviar indefinidamente
+        return jsonify({"error": str(e)}), 200
 
 
 # ==============================
