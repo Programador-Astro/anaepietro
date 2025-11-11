@@ -92,7 +92,7 @@ def pagar():
         print("📥 Retorno da API PagBank:", json.dumps(resp_json, indent=2, ensure_ascii=False))
 
         # Extrair informações importantes
-        order_id = resp_json.get("id")              # ID oficial do PagBank
+        order_id = resp_json.get("id")              # ID oficial do PagBanks
         charge_id = None
         status = "PENDENTE"
 
@@ -178,8 +178,8 @@ def cancelado():
 @app.route('/notificacaopagbank', methods=['POST'])
 def notificacao_pagbank():
     """
-    Recebe notificações do PagBank, atualiza o pagamento no banco
-    e envia o token por e-mail quando o pagamento for confirmado.
+    Recebe notificações do PagBank, atualiza o pagamento e envia o token por e-mail.
+    Compatível com fluxo CHECKOUT -> ORDER.
     """
     try:
         payload = request.get_json(silent=True) or {}
@@ -187,16 +187,23 @@ def notificacao_pagbank():
         print("📬 Notificação recebida do PagBank:", json.dumps(payload, indent=2, ensure_ascii=False))
 
         # ======================================================
-        # 1️⃣ Salva tudo no banco (auditoria)
+        # 1️⃣ Guarda a notificação completa no banco
         # ======================================================
         notificacao = NotificacaoPagBank(payload=payload, headers=headers)
         db.session.add(notificacao)
         db.session.commit()
 
         # ======================================================
-        # 2️⃣ Extrai o ID oficial do PagBank
+        # 2️⃣ Extrai o reference_id (é o ID do checkout original)
         # ======================================================
-        order_id = payload.get("id")  # ← agora é o ID real, ex: "ORD-123456789"
+        reference_id = None
+        items = payload.get("items", [])
+        if items:
+            reference_id = items[0].get("reference_id")
+
+        # ======================================================
+        # 3️⃣ Extrai o novo status (se houver charges)
+        # ======================================================
         novo_status = None
         if payload.get("charges"):
             novo_status = payload["charges"][0].get("status", "PENDING")
@@ -204,25 +211,24 @@ def notificacao_pagbank():
             novo_status = payload.get("status", "PENDING")
 
         # ======================================================
-        # 3️⃣ Atualiza o pagamento correspondente
+        # 4️⃣ Atualiza o pagamento no banco
         # ======================================================
-        if order_id:
-            pagamento = Pagamento.query.filter_by(id_pagbank=order_id).first()
+        if reference_id:
+            pagamento = Pagamento.query.filter_by(id_pagbank=reference_id).first()
 
             if pagamento:
                 pagamento.status = novo_status
 
-                # Atualiza dados do cliente se existirem
+                # Atualiza informações do cliente
                 customer = payload.get("customer", {})
-                if customer:
-                    pagamento.nome_pagbank = customer.get("name")
-                    pagamento.email_pagbank = customer.get("email")
+                pagamento.nome_pagbank = customer.get("name")
+                pagamento.email_pagbank = customer.get("email")
 
                 db.session.commit()
-                print(f"🔄 Pagamento {order_id} atualizado para status: {novo_status}")
+                print(f"🔄 Pagamento {reference_id} atualizado para status: {novo_status}")
 
                 # ======================================================
-                # 4️⃣ Se foi pago, envia o e-mail com o token
+                # 5️⃣ Se foi pago, envia o e-mail com o token
                 # ======================================================
                 if novo_status.upper() == "PAID":
                     assunto = "🎉 Pagamento confirmado!"
@@ -235,25 +241,19 @@ def notificacao_pagbank():
                     """
                     try:
                         enviar_email(pagamento.email_pagbank or pagamento.email_site, assunto, mensagem_html)
-                        print(f"📧 E-mail de confirmação enviado para {pagamento.email_pagbank or pagamento.email_site}")
+                        print(f"📧 E-mail enviado para {pagamento.email_pagbank or pagamento.email_site}")
                     except Exception as e:
                         print("⚠️ Erro ao enviar e-mail:", e)
-
             else:
-                print(f"⚠️ Nenhum pagamento encontrado para o order_id: {order_id}")
-
+                print(f"⚠️ Nenhum pagamento encontrado para reference_id: {reference_id}")
         else:
-            print("⚠️ Notificação sem campo 'id' (order_id). Payload incompleto?")
+            print("⚠️ Notificação sem reference_id. Payload incompleto?")
 
-        # ======================================================
-        # 5️⃣ Sempre retorna 200 (exigido pelo PagBank)
-        # ======================================================
         return jsonify({"message": "Notificação processada com sucesso"}), 200
 
     except Exception as e:
         print("❌ Erro em /notificacaopagbank:", e)
         traceback.print_exc()
-        # Mesmo com erro, o PagBank exige status 200 para não reenviar indefinidamente
         return jsonify({"error": str(e)}), 200
 
 
