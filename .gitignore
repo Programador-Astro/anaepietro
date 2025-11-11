@@ -1,0 +1,103 @@
+# ======== PYTHON / FLASK ========
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+instance/
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+celerybeat-schedule
+*.db
+*.sqlite3
+
+# ======== VENV / DEPENDÊNCIAS ========
+venv/
+env/
+ENV/
+.venv/
+env.bak/
+*.log
+
+# ======== CONFIGURAÇÕES SENSÍVEIS ========
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.json
+config.ini
+settings.cfg
+credentials/
+secrets/
+aws_credentials.json
+
+# ======== FLASK ========
+*.db
+*.sqlite
+*.sqlite3
+*.pid
+flask_session/
+*.bak
+*.swp
+
+# ======== FRONTEND ========
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+dist/
+build/
+.DS_Store
+*.map
+
+# ======== IDE / SISTEMA ========
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.iml
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ======== DOCKER ========
+*.pid
+*.tar
+*.bak
+docker-compose.override.yml
+.dockerignore
+logs/
+tmp/
+*.log
+
+# ======== AWS / RENDER ========
+*.zip
+*.tar.gz
+.aws/
+.aws-sam/
+render.yaml
+
+# ======== TESTES E BACKUPS ========
+test_results/
+tests/__pycache__/
+*.bak
+*.tmp
+*.old
+*.orig
+
+# ======== CACHE / TEMPORAIS ========
+.cache/
+__MACOSX/
+tmp/
+*.tmp
+*.bak

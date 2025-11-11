@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Digite seu token</title>
+  <style>
+    body { font-family: Arial; background-color: #f5f5f5; padding: 50px; }
+    form { background: white; padding: 30px; max-width: 400px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px #ccc; }
+    input, button { width: 100%; padding: 10px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">Informe seu token</h2>
+  
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div style="color:red; text-align:center;">{{ messages[0] }}</div>
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST">
+    <label>Token recebido por e-mail:</label>
+    <input type="text" name="token" placeholder="Digite seu token"required>
+    <button type="submit">Acessar</button>
+  </form>
+</body>
+</html>

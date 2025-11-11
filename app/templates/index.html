@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css.css">
+
+      <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Ana  & Pietro</title>
+</head>
+<body>
+    <nav>
+    <div class="logo">Ana & Pietro</div>
+
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#casal">Casal</a></li>
+      <li><a href="#presentes">presentes</a></li>
+      <li><a href="#mensagens">mensagens</a></li>
+      
+    </ul>
+  </nav>
+   <!-- ===== SEÇÃO INÍCIO ===== -->
+  <section id="inicio" class="inicio">
+    <div class="foto foto1 lateral"></div>
+
+    <div class="foto foto2">
+      <div class="texto-centro">
+        <h1>Ana & Pietro</h1>
+        <p>Campo Grande - MS</p>
+      </div>
+    </div>
+
+    <div class="foto foto3 lateral"></div>
+  </section>
+
+  <!-- ===== SEÇÃO CASAL ===== -->
+  <section class="casal" id="casal">
+    <div class="casal-header">
+      <h3>“O amor é paciente, o amor é bondoso.  
+      Não inveja, não se vangloria, não se orgulha.  
+      Não maltrata, não procura seus interesses,  
+      não se ira facilmente, não guarda rancor.  
+      O amor não se alegra com a injustiça,  
+      mas se alegra com a verdade.  
+      Tudo sofre, tudo crê, tudo espera, tudo suporta.”</h3>
+      <p class="versiculo-ref animate-fadeup-delay">— 1 Coríntios 13:4–7</p>
+    </div>
+
+    <div class="galeria">
+      <div class="slides">
+        <!-- 10 fotos -->
+        <img src="static/img/ft1.png" class="ativo" alt="foto1">
+        <img src="static/img/ft2.png" alt="foto2">
+        <img src="static/img/ft3.png" alt="foto3">
+        <img src="static/img/ft4.png" alt="foto4">
+        <img src="static/img/ft5.png" alt="foto5">
+        <img src="static/img/ft6.png" alt="foto6">
+        <img src="static/img/ft7.png" alt="foto7">
+        <img src="static/img/ft8.png" alt="foto8">
+        <img src="static/img/ft9.png" alt="foto9">
+        <img src="static/img/ft10.png" alt="foto10">
+      </div>
+
+      <div class="miniaturas">
+        <img src="static/img/ft1.png" class="ativo" alt="foto1">
+         <img src="static/img/ft2.png" alt="foto2">
+        <img src="static/img/ft3.png" alt="foto3">
+        <img src="static/img/ft4.png" alt="foto4">
+        <img src="static/img/ft5.png" alt="foto5">
+        <img src="static/img/ft6.png" alt="foto6">
+        <img src="static/img/ft7.png" alt="foto7">
+        <img src="static/img/ft8.png" alt="foto8">
+        <img src="static/img/ft9.png" alt="foto9">
+        <img src="static/img/ft10.png" alt="foto10">
+      </div>
+    </div>
+  </section>
+<!-- Modal de pagamento -->
+<div id="checkoutModal" class="modal">
+  <div class="modal-content">
+    <span id="closeCheckout" class="close">&times;</span>
+    <h2>Finalize sua compra</h2>
+    <form id="checkoutForm">
+      <label for="nome">Nome completo:</label>
+      <input type="text" id="nome" name="nome" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="cpf">CPF:</label>
+      <input type="text" id="cpf" name="cpf" required pattern="\d{11}" title="Digite 11 números">
+
+      <button type="submit" class="btn-submit">Pagar</button>
+    </form>
+  </div>
+</div>
+
+  <!-- ===== ÍCONE DO CARRINHO ===== -->
+<div class="cart-icon" id="cartIcon">
+  🛒
+  <span id="cartCount">0</span>
+</div>
+
+<!-- ===== MODAL DO CARRINHO ===== -->
+<div class="cart-modal" id="cartModal">
+  <div class="cart-content">
+    <span class="close-modal" id="closeCart">&times;</span>
+    <h2>Seu Carrinho</h2>
+    <div id="cartItems" class="cart-items">
+      <p class="empty">Seu carrinho está vazio 😔</p>
+    </div>
+    <button class="btn-pagar">Pagar 💳</button>
+  </div>
+</div>
+  <!-- ===== SEÇÃO PRESENTES ===== -->
+  <section id="presentes" class="presentes">
+    <h2>Presentes</h2>
+
+    <!-- Presentes normais -->
+    <div class="linha-presentes">
+      <h3>🎁 Presentes para a Casa Nova dos noivos</h3>
+      <div class="scroll-container">
+        <!-- 6 exemplos (pode duplicar até 10+) -->
+        
+
+        <div class="card">
+          <img src="/static/img/cama.webp" alt="cama">
+          <div class="card-content">
+            <h4>Cama Box Casal <br> (Box + Colchão) <br> Ortobom de Mola.</h4>
+            <p> Ortotech 61cm de Altura <br> 2 Travesseiros Nápoles.</p>
+            <span class="price">R$ 1.614,99</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+        
+
+        <div class="card">
+          <img src="/static/img/fogão.jpg" alt="fogão">
+          <div class="card-content">
+            <h4> Fogão Atlas 5 Bocas   preto <br> Mônaco Top Glass</h4>
+            <p>  Com Acendimento automático <br> - Bivolt.</p>
+            <span class="price">R$ 901,45</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="/static/img/mesa.webp" alt="mesa">
+          <div class="card-content">
+            <h4> Mesa de Jantar 4 Cadeiras <br> Retangular Cinza <br> Saara DJ Móveis Siena</h4>
+            <p></p>
+            <span class="price">R$ 1.329</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/arcond.avif" alt="ar">
+          <div class="card-content">
+            <h4> Ar-Condicionado LG <br> AI Dual Inverter Voice</h4>
+            <p>  12.000 BTU Quente/Frio 220V</p>
+            <span class="price">R$  2.663,10</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/geladeira.png" alt="ar">
+          <div class="card-content">
+            <h4> Geladeira Brastemp <br>Frost Free </h4>
+            <p>  Duplex 375 Litros <br> Cor Inox com Espaço Adapt - BRM45JK</p>
+            <span class="price">R$ 3.189,89</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="/static/img/sofa.jpg" alt="ar">
+          <div class="card-content">
+            <h4> Sofá Retrátil 2 Lugares <br> 1,80m Liz Suede Cinza <br> Adonai Estofados</h4>
+            <p></p>
+            <span class="price">R$ 1.700,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/micro.jpg" alt="micro-ondas">
+          <div class="card-content">
+            <h4> Micro-Ondas, Mondial</h4>
+            <p> Espelhado, 1400W <br>110V - MO-02-34-E</p>
+            <span class="price">R$ 669,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+        <div class="card">
+          <img src="/static/img/tv.jpg" alt="tv">
+          <div class="card-content">
+            <h4> Samsung Smart TV 50" </h4>
+            <p> Crystal UHD 4K U8100F 2025</p>
+            <span class="price">R$ 2074,96</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/laval.webp" alt="lava louças">
+          <div class="card-content">
+            <h4> Lava-Louça Electrolux </h4>
+            <p> 8 Serviços Branca <br> Programa Lava & Seca 50 min <br> (LB08E)</p>
+            <span class="price">R$ 1.899,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/lavaroupas1.jpg" alt="lava roupas">
+          <div class="card-content">
+            <h4> Máquina de Lavar <br> 14 Kg Philco  </h4>
+            <p> PLR14B 12 Programas <br> de Lavagem 220V </p>
+            <span class="price">R$ 1.950,35</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+        <div class="card">
+          <img src="/static/img/panela1.webp" alt="panela 1">
+          <div class="card-content">
+            <h4>Panela Elétrica Electrolux </h4>
+            <p> por Rita Lobo 1,8L Preta <br> Experience Digital (ECC20) 220V </p>
+            <span class="price">R$ 279,90</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+        <div class="card">
+          <img src="/static/img/panela pressão.jpg" alt="panela 2">
+          <div class="card-content">
+            <h4> Panela de Pressão <br> Elétrica Mondial</h4>
+            <p> Digital 5l, Preto/Inox, <br> 900W, 110V - PE-38 </p>
+            <span class="price">R$ 377,52</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+
+        <div class="card">
+          <img src="/static/img/liquidificador.jpg" alt="liquidificador">
+          <div class="card-content">
+            <h4>Liquidificador <br> Mondial</h4>
+            <p>Turbo Power 550W <br> 220V, Preto, <br> 2,2 L - L-99 FB </p>
+            <span class="price">R$ 85,43</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+
+
+        <div class="card">
+          <img src="/static/img/fritadeira.jpg" alt="fritadeira">
+          <div class="card-content">
+            <h4>Air Fryer 5L, Mondial</h4>
+            <p>Preto/Inox, 1900W, <br> 220V - AFN-50-BI</p>
+            <span class="price">R$ 322,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+
+
+
+
+        <div class="card">
+          <img src="/static/img/bate.jpg" alt="fritadeira">
+          <div class="card-content">
+            <h4>Batedeira <br> Bella Massa, Mondial</h4>
+            <p>Preto/Inox, 500W, <br> 110V - B-23 NP</p>
+            <span class="price">R$ 129,12</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+
+
+
+
+
+      </div>
+    </div>
+
+    <!-- Presentes anormais -->
+    <div class="linha-presentes">
+      <h3>🎉 Mimos para os noivos</h3>
+      <div class="scroll-container">
+        <div class="card">
+          <img src="/static/img/taxa para cair.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Quer o Buquê?</h4>
+            <p>Taxa para o Buquê  CAIR na sua mão!</p>
+            <span class="price">R$ 100,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/taxa para não cair.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Não quer o Buquê?</h4>
+            <p>Taxa para o Buquê NÃO cair na sua mão!</p>
+            <span class="price">R$ 90,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        
+
+        <div class="card">
+          <img src="/static/img/rochele.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Claro que eu posso pagar.</h4>
+            <p>Meu marido tem 2 empregos!</p>
+            <span class="price">R$ 499,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/pix pao duro.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>PIX</h4>
+            <p>Pão duro!</p>
+            <span class="price">R$ 49,99</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+          <div class="card">
+          <img src="/static/img/para nao dizer.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Pra não dizer <br> que não deu nada.</h4>
+            <p></p>
+            <span class="price">R$ 150,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+          
+          <div class="card">
+          <img src="/static/img/silvio santos.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Aviãozinho de dinheiro!</h4>
+            <p></p>
+            <span class="price">R$ 800,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/razão.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Pra cobrir a noivade RAZÃO!</h4>
+            <p></p>
+            <span class="price">R$ 150,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+        <div class="card">
+          <img src="/static/img/orçamento.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Pix Solidário!</h4>
+            <p></p>
+            <span class="price">R$ 10,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/cafe.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Ajudinha no cafe da manhã <br> do aeroporto!</h4>
+            <p></p>
+            <span class="price">R$ 89,90</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        
+        <div class="card">
+          <img src="/static/img/psc.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Psicólogos para os <br> noivos não surtarem!</h4>
+            <p></p>
+            <span class="price">R$ 259,97</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/corte.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Corte de cabelo <br> pro noivo de 6 meses...</h4>
+            <p></p>
+            <span class="price">R$ 429,90</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+        <div class="card">
+          <img src="/static/img/xuxa.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Pagar o show da xuxa!</h4>
+            <p></p>
+            <span class="price">R$ 324,90</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+        <div class="card">
+          <img src="/static/img/curso.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Curso de culinária para noiva.</h4>
+            <p>Coitado do noivo!</p>
+            <span class="price">R$ 199,90</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+
+        <div class="card">
+          <img src="/static/img/foto com os noivos.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Foto com os noivos.</h4>
+            <p></p>
+            <span class="price">R$ 74,70</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/calmante.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Calmante para os noivos.</h4>
+            <p></p>
+            <span class="price">R$ 80,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+        <div class="card">
+          <img src="/static/img/filho.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Pix para perguntar pros noivos <br> quando vai ter filho.</h4>
+            <p></p>
+            <span class="price">R$ 480,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/buffet.jpg" alt="Viagem">
+          <div class="card-content">
+            <h4>Garantir primeiro lugar <br> na fila do buffet.</h4>
+            <p></p>
+            <span class="price">R$ 120,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/static/img/spar.jpg" alt="spar">
+          <div class="card-content">
+            <h4>Spar da noiva.</h4>
+            <p></p>
+            <span class="price">R$ 95,50</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+
+        <div class="card">
+          <img src="/static/img/calmante2.jpg" alt="spar">
+          <div class="card-content">
+            <h4>Calmante para <br> o dia do Casamento.</h4>
+            <p></p>
+            <span class="price">R$ 79,90</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+        <div class="card">
+          <img src="/static/img/netflix.jpg" alt="netflix">
+          <div class="card-content">
+            <h4>1 ano de Netflix.</h4>
+            <p></p>
+            <span class="price">R$ 499,90</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+
+
+        <div class="card">
+          <img src="/static/img/ar.jpg" alt="netflix">
+          <div class="card-content">
+            <h4>Cota do ar condicionado.</h4>
+            <p> para não torrar no calor</p>
+            <span class="price">R$ 140,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+
+        <div class="card">
+          <img src="/static/img/picanha.jpg" alt="netflix">
+          <div class="card-content">
+            <h4>Vale picanha.</h4>
+            <p></p>
+            <span class="price">R$ 60,00</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+        <div class="card">
+          <img src="/static/img/duro dorme.jpg" alt="netflix">
+          <div class="card-content">
+            <h4>Se tá duro dorme valor 1,99.</h4>
+            <p></p>
+            <span class="price">R$ 1,99</span> <br>
+            <button>Adicionar</button>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SEÇÃO COMENTÁRIOS ===== -->
+<section id="mensagens" class="comentarios">
+  <h2>Mensagens dos Convidados</h2>
+  <div id="comentariosContainer">
+    <p>Carregando comentários...</p>
+  </div>
+</section>
+
+  <script src="static/style.js"></script>
+</body>
+</html>

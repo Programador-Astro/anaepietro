@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Administrativo - Lista de Convidados</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Ícones -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 20px;
+        }
+
+        .badge-status {
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .badge-pendente {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .badge-confirmada {
+            background-color: #28a745;
+        }
+
+        .badge-cancelada {
+            background-color: #dc3545;
+        }
+
+        .table thead {
+            background-color: #198754;
+            color: white;
+        }
+
+        .alert {
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .btn-sm {
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body class="py-5">
+    <div class="container">
+
+        <!-- Mensagens Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'warning' }} alert-dismissible fade show" role="alert">
+                        <i class="bi bi-info-circle"></i> {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Título -->
+        <div class="text-center mb-5">
+            <h1 class="text-success"><i class="bi bi-people-fill"></i> Painel Administrativo</h1>
+            <p class="text-secondary">Gerencie a lista de convidados, atualize status e envie convites personalizados.</p>
+        </div>
+
+        <!-- Tabela de Convidados -->
+        <div class="table-container">
+            <table class="table table-hover align-middle text-center">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Status Atual</th>
+                        <th>Alterar Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for presenca in lista_presencas %}
+                        <tr>
+                            <td class="fw-semibold">{{ presenca.nome }}</td>
+                            <td>{{ presenca.email }}</td>
+                            <td>{{ presenca.tell or '-' }}</td>
+                            <td>
+                                {% if presenca.status == 'Confirmada' %}
+                                    <span class="badge badge-status badge-confirmada"><i class="bi bi-check-circle"></i> Confirmada</span>
+                                {% elif presenca.status == 'Pendente' %}
+                                    <span class="badge badge-status badge-pendente"><i class="bi bi-hourglass-split"></i> Pendente</span>
+                                {% elif presenca.status == 'Cancelada' %}
+                                    <span class="badge badge-status badge-cancelada"><i class="bi bi-x-circle"></i> Cancelada</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Indefinido</span>
+                                {% endif %}
+                            </td>
+
+                            <!-- Dropdown de status -->
+                            <td>
+                                <form method="POST" action="{{ url_for('alterar_status_convidado', presenca_id=presenca.id) }}">
+                                    <div class="input-group input-group-sm">
+                                        <select name="status" class="form-select">
+                                            <option value="Pendente" {% if presenca.status == 'Pendente' %}selected{% endif %}>Pendente</option>
+                                            <option value="Confirmada" {% if presenca.status == 'Confirmada' %}selected{% endif %}>Confirmada</option>
+                                            <option value="Cancelada" {% if presenca.status == 'Cancelada' %}selected{% endif %}>Cancelada</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="bi bi-save"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+
+                            <!-- Botão Enviar Convite -->
+                            <td>
+                                <form method="POST" action="#">
+                                    <button type="submit" class="btn btn-outline-info btn-sm">
+                                        <i class="bi bi-envelope-paper"></i> Enviar Convite
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
