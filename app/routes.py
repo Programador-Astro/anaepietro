@@ -34,7 +34,7 @@ def pagar():
         data = request.json or {}
         print("📦 Dados recebidos para pagamento:", data)
 
-        # Loga tudo que chega
+        # Log de auditoria
         retorno = Retorno(str_ret=json.dumps(data, ensure_ascii=False))
         db.session.add(retorno)
         db.session.commit()
@@ -56,21 +56,28 @@ def pagar():
             "Content-Type": "application/json"
         }
 
-        # ===============================
-        # Estrutura dos itens
-        # ===============================
+        # ===================================================
+        # 1️⃣ Gerar um reference_id único para vincular notificações
+        # ===================================================
+        reference_id = f"REF-{uuid.uuid4()}"
+
+        # ===================================================
+        # 2️⃣ Estrutura dos itens (com reference_id incluído)
+        # ===================================================
         payload_items = []
         for i, item in enumerate(items, start=1):
             payload_items.append({
                 "name": item.get("name", f"Item {i}"),
                 "quantity": int(item.get("quantity", 1)),
-                "unit_amount": int(item.get("unit_amount", 0))
+                "unit_amount": int(item.get("unit_amount", 0)),
+                "reference_id": reference_id   # ✅ ESSENCIAL para o webhook
             })
 
-        # ===============================
-        # Payload principal
-        # ===============================
+        # ===================================================
+        # 3️⃣ Payload principal do checkout
+        # ===================================================
         payload = {
+            "reference_id": reference_id,
             "customer": {
                 "name": nome,
                 "email": email,
@@ -83,16 +90,18 @@ def pagar():
 
         print("📤 Enviando payload ao PagBank:", json.dumps(payload, indent=2, ensure_ascii=False))
 
-        # ===============================
-        # Envia ao PagBank
-        # ===============================
+        # ===================================================
+        # 4️⃣ Envia ao PagBank
+        # ===================================================
         resp = requests.post(url_api, headers=headers, json=payload)
         resp.raise_for_status()
         resp_json = resp.json()
         print("📥 Retorno da API PagBank:", json.dumps(resp_json, indent=2, ensure_ascii=False))
 
-        # Extrair informações importantes
-        order_id = resp_json.get("id")              # ID oficial do PagBanks
+        # ===================================================
+        # 5️⃣ Extrair informações importantes
+        # ===================================================
+        order_id = resp_json.get("id")        # ID oficial do PagBank (CHEC_...)
         charge_id = None
         status = "PENDENTE"
 
@@ -100,7 +109,7 @@ def pagar():
             charge_id = resp_json["charges"][0].get("id")
             status = resp_json["charges"][0].get("status", "PENDENTE")
 
-        # Extrair link de pagamento (rel="PAY")
+        # Link de pagamento (rel="PAY")
         link_checkout = next(
             (link["href"] for link in resp_json.get("links", []) if link.get("rel") == "PAY"),
             None
@@ -109,9 +118,9 @@ def pagar():
         if not link_checkout:
             return jsonify({"error": "Link de checkout não encontrado"}), 500
 
-        # ===============================
-        # Gravar no banco
-        # ===============================
+        # ===================================================
+        # 6️⃣ Gravar no banco
+        # ===================================================
         novo_pagamento = Pagamento(
             nome=nome,
             email_site=email,
@@ -119,7 +128,7 @@ def pagar():
             presente=f"{len(items)} itens",
             valor=total,
             status=status,
-            id_pagbank=order_id,    # ← agora o próprio código do PagBank é salvo
+            id_pagbank=reference_id,   # ← usamos o mesmo reference_id para vincular
             charge_id=charge_id,
             token=token,
             items=json.dumps(items, ensure_ascii=False)
@@ -128,11 +137,15 @@ def pagar():
         db.session.add(novo_pagamento)
         db.session.commit()
 
-        print(f"✅ Pagamento criado | ID interno: {novo_pagamento.id} | PagBank: {order_id}")
+        print(f"✅ Pagamento criado | ID interno: {novo_pagamento.id} | Ref: {reference_id}")
 
+        # ===================================================
+        # 7️⃣ Retorno para o front
+        # ===================================================
         return jsonify({
             "checkout_url": link_checkout,
             "pagamento_id": novo_pagamento.id,
+            "reference_id": reference_id,
             "order_id": order_id,
             "charge_id": charge_id,
             "status": status
@@ -142,7 +155,8 @@ def pagar():
         print("🔥 ERRO INTERNO EM /pagar:", e)
         print(format_exc())
         return jsonify({"error": "Erro interno no servidor"}), 500
-
+    
+    
 @app.route('/pagamento-status/<int:id_pagamento>', methods=['GET'])
 def verificar_status_pagamento(id_pagamento):
     """Verifica o status de um pagamento existente."""
