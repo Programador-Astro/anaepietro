@@ -5,12 +5,31 @@ from flask import (
 from app import app, db
 from app.utils import enviar_email, gerar_token_seguro
 from app.models import Comentario, Pagamento, NotificacaoPagBank, Lista_presenca, Retorno
+from datetime import datetime
 import requests
 import uuid
 import os
 from dotenv import load_dotenv
 import json
 load_dotenv()
+
+LOG_FILE = ".pagbank_logs.log"
+
+
+def registrar_log(titulo: str, conteudo: dict):
+    """Grava logs estruturados em arquivo .log"""
+    try:
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"\n{'='*80}\n")
+            f.write(f"🕓 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write(f"📘 {titulo}\n")
+            f.write(json.dumps(conteudo, indent=2, ensure_ascii=False))
+            f.write(f"\n{'='*80}\n")
+    except Exception as e:
+        print("⚠️ Erro ao registrar log:", e)
+
+
+
 
 # Constante simbólica para tokens já utilizados
 TOKEN_USADO = 101
@@ -25,8 +44,8 @@ def index():
     """Página inicial do site."""
     return render_template('index.html')
 
-@app.route('/pagar', methods=['POST'])
-def pagar():
+@app.route('/pagar1', methods=['POST'])
+def pagar1():
     """Inicia o processo de pagamento via PagBank com múltiplos itens."""
     from traceback import format_exc
     try:
@@ -156,7 +175,133 @@ def pagar():
         print(format_exc())
         return jsonify({"error": "Erro interno no servidor"}), 500
     
-    
+# ============================================================
+# 🔹 ROTA /pagar — Envia requisição ao PagBank e loga tudo
+# ============================================================
+@app.route('/pagar', methods=['POST'])
+def pagar():
+    from traceback import format_exc
+    try:
+        token = gerar_token_seguro()
+        data = request.json or {}
+        print("📦 Dados recebidos para pagamento:", data)
+
+        # Log inicial da solicitação recebida
+        registrar_log("REQUEST RECEBIDO DO FRONTEND /pagar", data)
+
+        retorno = Retorno(str_ret=json.dumps(data, ensure_ascii=False))
+        db.session.add(retorno)
+        db.session.commit()
+
+        nome = data.get("nome")
+        email = data.get("email")
+        cpf = data.get("cpf")
+        items = data.get("items", [])
+        total = float(data.get("total", 0))
+
+        if not nome or not email or not cpf or not items:
+            return jsonify({"error": "Dados incompletos."}), 400
+
+        TOKEN = os.getenv('TOKEN')
+        url_api = "https://sandbox.api.pagseguro.com/checkouts"
+
+        headers = {
+            "Authorization": f"Bearer {TOKEN}",
+            "Content-Type": "application/json"
+        }
+
+        reference_id = f"REF-{uuid.uuid4()}"
+
+        payload_items = []
+        for i, item in enumerate(items, start=1):
+            payload_items.append({
+                "name": item.get("name", f"Item {i}"),
+                "quantity": int(item.get("quantity", 1)),
+                "unit_amount": int(item.get("unit_amount", 0)),
+                "reference_id": reference_id
+            })
+
+        payload = {
+            "reference_id": reference_id,
+            "customer": {
+                "name": nome,
+                "email": email,
+                "tax_id": cpf
+            },
+            "items": payload_items,
+            "notification_urls": ["https://anaepietro-env.up.railway.app/notificacaopagbank"],
+            "redirect_url": f"https://anaepietro-env.up.railway.app/comentar/{token}"
+        }
+
+        print("📤 Enviando payload ao PagBank:", json.dumps(payload, indent=2, ensure_ascii=False))
+
+        # Log do request ao PagBank
+        registrar_log("REQUEST ENVIADO PARA PAGBANK /checkouts", {
+            "url": url_api,
+            "headers": headers,
+            "body": payload
+        })
+
+        resp = requests.post(url_api, headers=headers, json=payload)
+        resp.raise_for_status()
+        resp_json = resp.json()
+
+        print("📥 Retorno da API PagBank:", json.dumps(resp_json, indent=2, ensure_ascii=False))
+
+        # Log da resposta recebida
+        registrar_log("RESPONSE RECEBIDO DO PAGBANK /checkouts", resp_json)
+
+        order_id = resp_json.get("id")
+        charge_id = None
+        status = "PENDENTE"
+
+        if resp_json.get("charges"):
+            charge_id = resp_json["charges"][0].get("id")
+            status = resp_json["charges"][0].get("status", "PENDENTE")
+
+        link_checkout = next(
+            (link["href"] for link in resp_json.get("links", []) if link.get("rel") == "PAY"),
+            None
+        )
+
+        if not link_checkout:
+            return jsonify({"error": "Link de checkout não encontrado"}), 500
+
+        novo_pagamento = Pagamento(
+            nome=nome,
+            email_site=email,
+            cpf=cpf,
+            presente=f"{len(items)} itens",
+            valor=total,
+            status=status,
+            id_pagbank=reference_id,
+            charge_id=charge_id,
+            token=token,
+            items=json.dumps(items, ensure_ascii=False)
+        )
+
+        db.session.add(novo_pagamento)
+        db.session.commit()
+
+        print(f"✅ Pagamento criado | ID interno: {novo_pagamento.id} | Ref: {reference_id}")
+
+        return jsonify({
+            "checkout_url": link_checkout,
+            "pagamento_id": novo_pagamento.id,
+            "reference_id": reference_id,
+            "order_id": order_id,
+            "charge_id": charge_id,
+            "status": status
+        }), 200
+
+    except Exception as e:
+        print("🔥 ERRO INTERNO EM /pagar:", e)
+        print(format_exc())
+        registrar_log("ERRO EM /pagar", {"erro": str(e), "trace": format_exc()})
+        return jsonify({"error": "Erro interno no servidor"}), 500
+
+
+
 @app.route('/pagamento-status/<int:id_pagamento>', methods=['GET'])
 def verificar_status_pagamento(id_pagamento):
     """Verifica o status de um pagamento existente."""
@@ -189,8 +334,8 @@ def cancelado():
 # 📡 Webhook PagBank
 # ==============================
 
-@app.route('/notificacaopagbank', methods=['POST'])
-def notificacao_pagbank():
+@app.route('/notificacaopagbank1', methods=['POST'])
+def notificacao_pagbank1():
     """
     Recebe notificações do PagBank, atualiza o pagamento e envia o token por e-mail.
     Compatível com fluxo CHECKOUT -> ORDER.
@@ -268,6 +413,87 @@ def notificacao_pagbank():
     except Exception as e:
         print("❌ Erro em /notificacaopagbank:", e)
         traceback.print_exc()
+        return jsonify({"error": str(e)}), 200
+
+
+
+# ============================================================
+# 🔹 ROTA /notificacaopagbank — Recebe notificações e loga tudos
+# ============================================================
+@app.route('/notificacaopagbank', methods=['POST'])
+def notificacao_pagbank():
+    try:
+        payload = request.get_json(silent=True) or {}
+        headers = dict(request.headers)
+        print("📬 Notificação recebida do PagBank:", json.dumps(payload, indent=2, ensure_ascii=False))
+
+        # Log completo da notificação recebida
+        registrar_log("NOTIFICAÇÃO RECEBIDA DO PAGBANK /notificacaopagbank", {
+            "headers": headers,
+            "body": payload
+        })
+
+        notificacao = NotificacaoPagBank(payload=payload, headers=headers)
+        db.session.add(notificacao)
+        db.session.commit()
+
+        reference_id = None
+        items = payload.get("items", [])
+        if items:
+            reference_id = items[0].get("reference_id")
+
+        novo_status = None
+        if payload.get("charges"):
+            novo_status = payload["charges"][0].get("status", "PENDING")
+        else:
+            novo_status = payload.get("status", "PENDING")
+
+        if reference_id:
+            pagamento = Pagamento.query.filter_by(id_pagbank=reference_id).first()
+
+            if pagamento:
+                pagamento.status = novo_status
+
+                customer = payload.get("customer", {})
+                pagamento.nome_pagbank = customer.get("name")
+                pagamento.email_pagbank = customer.get("email")
+
+                db.session.commit()
+                print(f"🔄 Pagamento {reference_id} atualizado para status: {novo_status}")
+
+                if novo_status.upper() == "PAID":
+                    assunto = "🎉 Pagamento confirmado!"
+                    mensagem_html = f"""
+                        <h2>Olá, {pagamento.nome or 'amigo(a)'}!</h2>
+                        <p>Seu presente foi recebido com sucesso 💖</p>
+                        <p>Use este token para comentar: <b>{pagamento.token}</b></p>
+                        <p>Obrigado por participar desse momento especial!</p>
+                        <p><strong>Ana & Pietro</strong></p>
+                    """
+                    try:
+                        enviar_email(pagamento.email_pagbank or pagamento.email_site, assunto, mensagem_html)
+                        print(f"📧 E-mail enviado para {pagamento.email_pagbank or pagamento.email_site}")
+                    except Exception as e:
+                        print("⚠️ Erro ao enviar e-mail:", e)
+                        registrar_log("ERRO AO ENVIAR E-MAIL", {"erro": str(e)})
+
+                # Log do processamento da notificação
+                registrar_log("PROCESSAMENTO FINALIZADO DE NOTIFICAÇÃO", {
+                    "reference_id": reference_id,
+                    "status_atual": novo_status
+                })
+
+            else:
+                print(f"⚠️ Nenhum pagamento encontrado para reference_id: {reference_id}")
+        else:
+            print("⚠️ Notificação sem reference_id. Payload incompleto?")
+
+        return jsonify({"message": "Notificação processada com sucesso"}), 200
+
+    except Exception as e:
+        print("❌ Erro em /notificacaopagbank:", e)
+        traceback.print_exc()
+        registrar_log("ERRO EM /notificacaopagbank", {"erro": str(e), "trace": traceback.format_exc()})
         return jsonify({"error": str(e)}), 200
 
 

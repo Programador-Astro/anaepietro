@@ -291,3 +291,23 @@ async function carregarComentarios() {
 document.addEventListener("DOMContentLoaded", () => {
   carregarComentarios();
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.innerWidth <= 768) {
+    const fotos = document.querySelectorAll('.inicio .foto');
+    let indexAtual = 0;
+
+    // Define o estado inicial
+    fotos.forEach((foto, i) => {
+      foto.classList.remove('ativa');
+      if (i === 0) foto.classList.add('ativa');
+    });
+
+    // Alterna suavemente a cada 2 segundos
+    setInterval(() => {
+      fotos[indexAtual].classList.remove('ativa');
+      indexAtual = (indexAtual + 1) % fotos.length;
+      fotos[indexAtual].classList.add('ativa');
+    }, 2000);
+  }
+});

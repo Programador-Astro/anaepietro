@@ -1,773 +1,480 @@
-/* ====== RESET ====== */
+/* =========================================================
+   ARQUIVO UNIFICADO: style.css
+   Baseado em css.css (mantido) + complementos do style.css
+   Tema: Rústico Oliva — Casamento / Presentes / Carrinho
+   ========================================================= */
+
+/* ====== 1. RESET E FONTES ====== */
 @import url('https://fonts.googleapis.com/css2?family=Love+Light&family=Parisienne&display=swap');
+
 * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    /* ====== NAVBAR ====== */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ====== 2. NAVBAR ====== */
 nav {
-  background-color: #003400; /* verde oliva escuro */
-  color: #fff;
-  display: flex;
-  /* Distribui os itens horizontalmente (ex: um à esquerda, outro à direita) */
-  justify-content: space-between; 
-  /* Centraliza os itens verticalmente (eixo cruzado) */
-  align-items: center; 
-  padding: 1rem 2rem;
-  font-family: "Love Light", cursive; /* fonte elegante */
-
-  /* PROPRIEDADES REMOVIDAS/INÚTEIS PARA FLEXBOX:
-  justify-items: center; 
-  text-align: center;
-  */
-}
-
-    /* Logo / Nome do casal */
-    .logo {
-      font-size: 1.8rem;
-      letter-spacing: 1px;
-      font-family: "Parisienne";
-      display: flex;
-      align-items: center;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* Links */
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 1.8rem;
-      font-family: initial;
-      align-items: center;
-      margin: 0;
-      padding: 0;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #fff;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    .nav-links a:hover {
-      color: #d4af37; /* dourado suave */
-    }
-
-    /* Botão hambúrguer */
-    .menu-toggle {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 5px;
-    }
-
-    .menu-toggle span {
-      width: 25px;
-      height: 3px;
-      background: #fff;
-      border-radius: 3px;
-      transition: 0.3s;
-    }
-
-    /* ====== RESPONSIVO ====== */
-    @media (max-width: 768px) {
-      .nav-links {
-        position: absolute;
-        top: 70px;
-        right: 0;
-        background-color: #003400;
-        flex-direction: column;
-        width: 100%;
-        text-align: center;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
-      }
-
-      .nav-links.open {
-        max-height: 300px;
-      }
-
-      .menu-toggle {
-        display: flex;
-      }
-    }
-
-
-     /* ===== SEÇÃO INÍCIO ===== */
-    .inicio {
-      display: flex;
-      height: 100vh;
-      width: 100%;
-    }
-
-    .foto {
-      flex: 1;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-    }
-
-    .foto.lateral {
-      flex: 1.3; /* laterais um pouco mais largas */
-    }
-
-    /* Fundo das imagens */
-    .foto1 { background-image: url('/static/img/esquerda_casal.jpg'); }
-    .foto2 { background-image: url('/static/img/casal_prin.jpg'); }
-    .foto3 { background-image: url('/static/img/direita_casal.jpg'); }
-
- /* Texto central */
-    .texto-centro {
-      position: absolute;
-      top: 70%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      color: #fff;
-      text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-      z-index: 2;
-      width: 100%;
-    }
-
-    .texto-centro h1 {
-      font-family: "Parisienne", cursive;
-      font-size: 3.4rem;
-    }
-
-    .texto-centro p {
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      letter-spacing: 1px;
-    }
-
-    /* Camada escura leve para leitura */
-    .foto2::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.3);
-      z-index: 1;
-    }
-
-    /* ===== RESPONSIVO ===== */
-    @media (max-width: 768px) {
-      .inicio {
-        display: block;
-      }
-
-      .foto {
-        display: none;
-      }
-
-      .foto2 {
-        display: block;
-        width: 100%;
-        height: 100vh;
-      }
-
-      .texto-centro h1 {
-        font-size: 2.8rem;
-      }
-
-      .texto-centro p {
-        font-size: 1rem;
-      }
-    }
-
-    /* ===== SEÇÃO CASAL ===== */
-    .casal {
-      width: 100%;
-      overflow: hidden;
-      background-image: url("static/img/azul.jpeg");
-
-    }
-
-    /* ----- TÍTULO / FUNDO VERDE OLIVA ----- */
-  .casal-header {
-    background: 
-    linear-gradient(135deg, rgba(36, 16, 16, 0.644), rgba(0, 0, 0, 0.815)),
-    url("/static/img/ft4.png") center/cover no-repeat;
-    color: #fff;
-    text-align: center;
-    padding: 4rem 1rem;
-    position: relative;
-    overflow: hidden;
-  }
-    .casal-header::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url("https://www.transparenttextures.com/patterns/white-diamond.png");
-      opacity: 0.05; /* textura elegante e sutil */
-    }
-
-    .casal-header h3 {
-      font-family: "Dancing Script", cursive;
-      font-size: 2rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .casal-header p {
-      font-size: 1.1rem;
-      margin-top: 1rem;
-      opacity: 0.9;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* ----- SLIDER DE FOTOS ----- */
-    .galeria {
-      position: relative;
-      max-width: 1000px;
-      margin: 3rem auto;
-    }
-
-    .slides {
-      position: relative;
-      width: 100%;
-      height: 600px;
-      overflow: hidden;
-      border-radius: 10px;
-    }
-
-    .slides img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
-
-    .slides img.ativo {
-      opacity: 1;
-    }
-
-    /* Miniaturas */
-    .miniaturas {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 1rem;
-    }
-
-    .miniaturas img {
-      width: 90px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 5px;
-      cursor: pointer;
-      opacity: 0.6;
-      transition: transform 0.3s, opacity 0.3s;
-    }
-
-    .miniaturas img.ativo {
-      border: 2px solid #003400;
-      opacity: 1;
-      transform: scale(1.05);
-    }
-
-    @media (max-width: 768px) {
-      .slides {
-        height: 300px;
-      }
-
-      .miniaturas img {
-        width: 60px;
-        height: 40px;
-      }
-
-      .casal-header h2 {
-        font-size: 2.3rem;
-      }
-
-      .casal-header p {
-        font-size: 1rem;
-      }
-    }
-    /* ===== SEÇÃO PRESENTES ===== */
-    .presentes {
-      padding: 4rem 1rem;
-      background-color: #f9f9f9;
-    }
-
-    .presentes h2 {
-      text-align: center;
-      font-family: "Dancing Script", cursive;
-      font-size: 3rem;
-      color: #003400;
-      margin-bottom: 2rem;
-    }
-
-    .linha-presentes {
-      margin-bottom: 3rem;
-    }
-
-    .linha-presentes h3 {
-      font-size: 1.6rem;
-      margin-bottom: 1rem;
-      color: #003400;
-      border-left: 5px solid #003400;
-      padding-left: 10px;
-      font-weight: 600;
-    }
-
-    .scroll-container {
-      display: flex;
-      gap: 1.5rem;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding-bottom: 1rem;
-    }
-
-    .scroll-container::-webkit-scrollbar {
-      height: 8px;
-    }
-
-    .scroll-container::-webkit-scrollbar-thumb {
-      background-color: #003400;
-      border-radius: 10px;
-    }
-
-    .card {
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      min-width: 250px;
-      flex-shrink: 0;
-      overflow: hidden;
-      transition: transform 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .card-content {
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .card-content h4 {
-      color: #003400;
-      margin-bottom: 0.5rem;
-      font-size: 1.2rem;
-    }
-
-    .card-content p {
-      font-size: 0.95rem;
-      color: #555;
-      margin-bottom: 1rem;
-    }
-
-    .card-content button {
-      background-color: #003400;
-      color: #fff;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-      font-size: 0.9rem;
-    }
-
-    .card-content button:hover {
-      background-color: #015c00;
-    }
-
-    /* Responsivo */
-    @media (max-width: 768px) {
-      .presentes h2 {
-        font-size: 2.2rem;
-      }
-
-      .linha-presentes h3 {
-        font-size: 1.3rem;
-      }
-
-      .card {
-        min-width: 200px;
-      }
-
-      .card img {
-        height: 150px;
-      }
-    }
-
-    /* ===== ÍCONE DO CARRINHO ===== */
-  .cart-icon {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #003400;
-    color: #fff;
-    font-size: 1.8rem;
-    padding: 0.8rem 1rem;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease;
-    z-index: 1000;
-  }
-
-  .cart-icon:hover {
-    transform: scale(1.1);
-  }
-
-  .cart-icon span {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    background-color: #d4af37;
-    color: #003400;
-    border-radius: 50%;
-    font-size: 0.8rem;
-    padding: 2px 6px;
-    font-weight: bold;
-  }
-
-  /* ===== MODAL ===== */
-  .cart-modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-  }
-
-  .cart-content {
-    background-color: #fff;
-    margin: auto;
-    padding: 2rem;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .close-modal {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 2rem;
-    color: #003400;
-    cursor: pointer;
-  }
-
-  .cart-content h2 {
-    text-align: center;
-    color: #003400;
-    margin-bottom: 1.5rem;
-  }
-
-  .cart-items {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 1.5rem;
-  }
-
-  .cart-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 0.8rem 1rem;
-  }
-
-  .cart-item img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 5px;
-    margin-right: 10px;
-  }
-
-  .item-info {
-    flex: 1;
-  }
-
-  .item-info h4 {
-    font-size: 1rem;
-    color: #003400;
-  }
-
-  .quantidade {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .quantidade button {
-    background-color: #003400;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-  }
-
-  .btn-pagar {
-    display: block;
-    width: 100%;
-    padding: 1rem;
-    background-color: #003400;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-
-  .btn-pagar:hover {
-    background-color: #015c00;
-  }
-
-  .empty {
-    text-align: center;
-    color: #777;
-    font-style: italic;
-  }
-
-  @media (max-width: 768px) {
-    .cart-icon {
-      font-size: 1.5rem;
-      padding: 0.7rem 0.9rem;
-    }
-
-    .cart-content {
-      width: 95%;
-      padding: 1.5rem;
-    }
-
-    .btn-pagar {
-      padding: 0.8rem;
-    }
-  }.modal {
-  display: none; 
-  position: fixed; 
-  z-index: 1000; 
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto; 
-  background-color: rgba(0,0,0,0.5); 
-}
-
-.modal-content {
-  background-color: #fff;
-  margin: 10% auto; 
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.close {
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.modal-content input {
-  width: 100%;
-  padding: 8px;
-  margin: 6px 0 12px 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.btn-submit {
   background-color: #003400;
   color: #fff;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  font-family: "Love Light", cursive;
+}
+
+.logo {
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  font-family: "Parisienne";
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.8rem;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #d4af37;
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
   cursor: pointer;
+  gap: 5px;
 }
 
-.btn-submit:hover {
-  background-color: #015c00;
+.menu-toggle span {
+  width: 25px;
+  height: 3px;
+  background: #fff;
+  border-radius: 3px;
+  transition: 0.3s;
 }
 
-.comentarios {
-  padding: 2rem;
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background-color: #003400;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+  .nav-links.open { max-height: 300px; }
+  .menu-toggle { display: flex; }
+}
+
+/* ====== 3. SEÇÃO INÍCIO ====== */
+.inicio {
+  background-color: #102c10; /* cor escura, quase preta */
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+/* ===== SUAVIZA A LINHA ENTRE AS FOTOS (DESKTOP) ===== */
+@media (min-width: 769px) {
+  .inicio {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .foto {
+    position: relative;
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s ease-in-out;
+  }
+
+  /* Efeito de leve zoom no hover */
+  .foto:hover {
+    transform: scale(1.05);
+    z-index: 2;
+  }
+
+  /* Máscaras de fusão lateral */
+  .foto1 {
+    -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 70%);
+    mask-image: linear-gradient(to right, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);
+  }
+
+  .foto2 {
+    -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 70%);
+    mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);
+  }
+
+  .foto3 {
+    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 10%, rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to left, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);
+  }
+
+  /* Fallback para navegadores sem suporte a mask-image */
+  .foto1::after,
+  .foto2::after,
+  .foto3::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+
+  .foto1::after {
+    right: 0;
+    width: 100px;
+    background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 100%);
+  }
+
+  .foto2::after {
+    left: 0;
+    right: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.2) 100%);
+  }
+
+  .foto3::after {
+    left: 0;
+    width: 100px;
+    background: linear-gradient(to left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 100%);
+  }
+}
+.foto {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100vh; /* ou a altura desejada */
+}
+
+.foto.lateral { flex: 1.3; }
+
+.foto1 { background-image: url('/static/img/esquerda_casal.jpg'); }
+.foto2 { background-image: url('/static/img/casal_prin.jpg'); }
+.foto3 { background-image: url('/static/img/direita_casal.jpg'); }
+
+.texto-centro {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+  z-index: 2;
+  width: 100%;
+}
+
+.texto-centro h1 {
+  font-family: "Parisienne", cursive;
+  font-size: 3.4rem;
+}
+
+.texto-centro p {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  letter-spacing: 1px;
+}
+
+.foto2::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0,0,0,0.3);
+  z-index: 1;
+}
+
+
+/* ===== FADE SUAVE NO MOBILE ===== */
+@media (max-width: 768px) {
+  .inicio {
+    position: relative;
+  }
+
+  .inicio .foto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .inicio .foto.ativa {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .inicio .texto-centro {
+    z-index: 2; /* garante que o texto fique visível acima das imagens */
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+  }
+}
+/* ====== 4. SEÇÃO CASAL ====== */
+.casal {
+  width: 100%;
+  overflow: hidden;
+  background-image: url("static/img/azul.jpeg");
+}
+
+.casal-header {
+  background: 
+    linear-gradient(135deg, rgba(36,16,16,0.644), rgba(0,0,0,0.815)),
+    url("/static/img/ft4.png") center/cover no-repeat;
+  color: #fff;
+  text-align: center;
+  padding: 4rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.casal-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/white-diamond.png");
+  opacity: 0.05;
+}
+
+.casal-header h3 {
+  font-family: "Dancing Script", cursive;
+  font-size: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.casal-header p {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  opacity: 0.9;
+  position: relative;
+  z-index: 2;
+}
+
+.galeria { position: relative; max-width: 1000px; margin: 3rem auto; }
+.slides { position: relative; width: 100%; height: 600px; overflow: hidden; border-radius: 10px; }
+.slides img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease-in-out; }
+.slides img.ativo { opacity: 1; }
+
+.miniaturas {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+}
+.miniaturas img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.3s;
+  opacity: 0.6;
+}
+.miniaturas img.ativo {
+  border: 2px solid #003400;
+  opacity: 1;
+  transform: scale(1.05);
+}
+.miniaturas img:hover { transform: scale(1.05); }
+
+@media (max-width: 768px) {
+  .slides { height: 300px; }
+  .miniaturas img { width: 60px; height: 40px; }
+  .casal-header h2 { font-size: 2.3rem; }
+  .casal-header p { font-size: 1rem; }
+}
+
+/* =========================================================
+   5. SEÇÃO PRESENTES — ÁREA DESTACADA
+   ========================================================= */
+
+.presentes {
+  padding: 4rem 1rem;
   background-color: #f9f9f9;
 }
 
-.comentarios h2 {
+.presentes h2 {
   text-align: center;
-  margin-bottom: 1.5rem;
+  font-family: "Dancing Script", cursive;
+  font-size: 3rem;
+  color: #003400;
+  margin-bottom: 2rem;
 }
 
-.comentario {
+.linha-presentes { margin-bottom: 3rem; }
+
+.linha-presentes h3 {
+  font-size: 1.6rem;
   margin-bottom: 1rem;
-}
-
-.comentario .data {
-  font-size: 0.85rem;
-  color: #555;
-  margin-left: 0.5rem;
-}
-
-.price {
-  display: inline-block;
-  font-size: 1.3rem;
-  color: #d4af37; /* dourado suave */
-  font-weight: bold;
-  margin-bottom: 0.8rem;
-  background: rgba(212, 175, 55, 0.1);
-  padding: 5px 10px;
-  border-radius: 8px;
-  letter-spacing: 0.5px;
-}
-
-/* ===== CARRINHO ===== */
-.cart-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  border-bottom: 1px solid #ddd;
-  padding: 6px 0;
-  font-size: 0.9rem; /* texto menor */
-}
-
-.cart-item img {
-  width: 55px; /* imagem menor */
-  height: 55px;
-  object-fit: cover;
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-
-.cart-item .info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.cart-item .info h4 {
-  margin: 0;
-  font-size: 0.95rem;
+  color: #003400;
+  border-left: 5px solid #003400;
+  padding-left: 10px;
   font-weight: 600;
 }
 
-.cart-item .info p {
-  margin: 0;
-  font-size: 0.8rem;
-  color: #555;
-}
-
-.cart-item .preco-unit,
-.cart-item .subtotal {
-  font-size: 0.8rem;
-  color: #444;
-}
-
-.cart-item .quantity-controls {
+/* ======== CARDS DE PRESENTES ======== */
+.scroll-container {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 3px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem;
+  scroll-snap-type: x mandatory;
 }
 
-.cart-item .quantity-controls button {
-  background-color: #eee;
-  border: none;
-  padding: 2px 6px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.2s;
+/* CARD BASE */
+.card {
+  flex: 0 0 auto;
+  width: 220px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 320px;
 }
 
-.cart-item .quantity-controls button:hover {
-  background-color: #ddd;
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
-.cart-item .remove {
-  background: none;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
-  color: #d33;
-  margin-left: 6px;
-  transition: transform 0.2s, color 0.2s;
-}
-
-.cart-item .remove:hover {
-  transform: scale(1.2);
-  color: #a00;
-}
-
-.cart-total {
-  text-align: right;
-  font-weight: bold;
-  margin-top: 8px;
-  font-size: 1rem;
-}
-
-/* Botão de pagar menor */
-.btn-pagar {
-  margin-top: 10px;
+.card img {
   width: 100%;
-  background: #198754;
+  height: 160px;
+  object-fit: cover;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+/* CONTEÚDO DO CARD */
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px;
+  text-align: center;
+}
+
+.card-content h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2d2d2d;
+  margin-bottom: 5px;
+  min-height: 40px;
+}
+
+.card-content p {
+  font-size: 0.8rem;
+  color: #666;
+  flex-grow: 1;
+  margin-bottom: 10px;
+  min-height: 35px;
+}
+
+.card-content .price {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #4b5c2b;
+  margin-bottom: 8px;
+  min-height: 20px;
+}
+
+.card-content button {
+  background-color: #4b5c2b;
   color: white;
   border: none;
-  padding: 8px;
-  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.2s;
+  transition: background 0.3s;
 }
 
-.btn-pagar:hover {
-  background: #157347;
+.card-content button:hover { background-color: #37451e; }
+
+/* ======== RESPONSIVIDADE PRESENTES ======== */
+@media (max-width: 768px) {
+  .scroll-container { gap: 0.8rem; padding: 0.5rem; }
+  .card { width: 160px; height: 270px; }
+  .card img { height: 120px; }
+  .card-content h4 { font-size: 0.8rem; min-height: 35px; }
+  .card-content p { font-size: 0.7rem; min-height: 30px; }
+  .card-content .price { font-size: 0.85rem; }
+  .card-content button { font-size: 0.75rem; padding: 5px 8px; }
 }
 
-/* Modal do carrinho */
+/* =========================================================
+   6. CARRINHO
+   ========================================================= */
+.cart-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #003400;
+  color: #fff;
+  font-size: 1.8rem;
+  padding: 0.8rem 1rem;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+.cart-icon:hover { transform: scale(1.1); }
+
+.cart-icon span {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background-color: #d4af37;
+  color: #003400;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  font-weight: bold;
+}
+
+/* Modal Carrinho */
 .cart-modal {
   display: none;
   justify-content: center;
@@ -804,42 +511,141 @@ nav {
   color: #555;
 }
 
-
-/* ===== CONFIGURAÇÃO GERAL DE IMAGENS ===== */
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
+/* Itens Carrinho */
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #ddd;
+  padding: 6px 0;
+  font-size: 0.9rem;
 }
 
-/* ===== AJUSTE ESPECÍFICO PARA IMAGENS DOS CARDS ===== */
-.card img {
-  width: 100%;
-  height: 160px; /* ou outro valor que caiba bem nos cards */
-  object-fit: cover; /* corta o excesso sem distorcer */
-  border-radius: 8px;
-}
-
-/* ===== AJUSTE PARA IMAGENS DO CARRINHO ===== */
 .cart-item img {
   width: 60px;
   height: 60px;
-  object-fit: cover; /* mantém proporção e preenche o espaço */
-  border-radius: 6px;
-  flex-shrink: 0;
-  background-color: #f3f3f3; /* fundo neutro se imagem for transparente */
-}
-
-/* ===== GARANTE QUE AS MINIATURAS DA GALERIA FIQUEM PROPORCIONAIS ===== */
-.miniaturas img {
-  width: 100px;
-  height: 100px;
   object-fit: cover;
   border-radius: 6px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  flex-shrink: 0;
+  background-color: #f3f3f3;
 }
 
-.miniaturas img:hover {
-  transform: scale(1.05);
+.cart-item .info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cart-item .info h4 { margin: 0; font-size: 0.95rem; font-weight: 600; }
+.cart-item .info p { margin: 0; font-size: 0.8rem; color: #555; }
+
+.cart-item .quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.cart-item .quantity-controls button {
+  background-color: #eee;
+  border: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.cart-item .quantity-controls button:hover { background-color: #ddd; }
+
+.cart-item .remove {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #d33;
+  margin-left: 6px;
+  transition: transform 0.2s, color 0.2s;
+}
+.cart-item .remove:hover { transform: scale(1.2); color: #a00; }
+
+.cart-total {
+  text-align: right;
+  font-weight: bold;
+  margin-top: 8px;
+  font-size: 1rem;
+}
+
+.btn-pagar {
+  margin-top: 10px;
+  width: 100%;
+  background: #198754;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.btn-pagar:hover { background: #157347; }
+
+/* ====== 7. MODAIS GERAIS ====== */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0,0,0,0.5);
+}
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.close { float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0 12px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.btn-submit {
+  background-color: #003400;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-submit:hover { background-color: #015c00; }
+
+/* ====== 8. COMENTÁRIOS ====== */
+.comentarios {
+  padding: 2rem;
+  background-color: #f9f9f9;
+}
+.comentarios h2 { text-align: center; margin-bottom: 1.5rem; }
+.comentario { margin-bottom: 1rem; }
+.comentario .data { font-size: 0.85rem; color: #555; margin-left: 0.5rem; }
+
+/* ====== 9. DETALHES VISUAIS ====== */
+.price {
+  display: inline-block;
+  font-size: 1.3rem;
+  color: #d4af37;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  background: rgba(212,175,55,0.1);
+  padding: 5px 10px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
 }
