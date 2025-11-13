@@ -130,6 +130,12 @@ nav {
     overflow: hidden;
   }
 
+.foto.lateral { flex: 1.3; }
+
+.foto1 { background-image: url('https://i.imgur.com/uk81p37.jpeg'); }
+.foto2 { background-image: url('https://i.imgur.com/uirOYGT.jpeg'); }
+.foto3 { background-image: url('https://i.imgur.com/l6P4zFP.jpeg'); }
+
   .foto {
     position: relative;
     flex: 1;
@@ -199,12 +205,6 @@ nav {
   width: 100%;
   height: 100vh; /* ou a altura desejada */
 }
-
-.foto.lateral { flex: 1.3; }
-
-.foto1 { background-image: url('/static/img/esquerda_casal.jpg'); }
-.foto2 { background-image: url('/static/img/casal_prin.jpg'); }
-.foto3 { background-image: url('/static/img/direita_casal.jpg'); }
 
 .texto-centro {
   position: absolute;
