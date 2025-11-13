@@ -15,6 +15,7 @@ COPY . .
 EXPOSE 5000
 
 # Usa Gunicorn para rodar a aplicação
-
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
+#CMD ["gunicorn", "--workers", "3", "--timeout", "120", "--bind", "0.0.0.0:5000", "wsgi:app"]
+
 #CMD [ "python", "run.py" ]

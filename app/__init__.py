@@ -18,7 +18,7 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME') 
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD') 
 app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER') 
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+#app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 mail = Mail(app)
 db.init_app(app)
 
@@ -46,7 +46,7 @@ csp = {
     ]
 }
 
-Talisman(app, force_https=True, content_security_policy=csp)
+#Talisman(app, force_https=True, content_security_policy=csp)
 from app.models import Comentario
 with app.app_context():
     db.create_all()
