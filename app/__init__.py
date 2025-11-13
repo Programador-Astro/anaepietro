@@ -6,9 +6,9 @@ from app.db import db
 from flask_mail import Mail
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_talisman import Talisman
+import requests
 
 load_dotenv()
-
 mail = Mail()
 
 def create_app():

@@ -13,7 +13,6 @@ import os
 from dotenv import load_dotenv
 import json
 import traceback
-import requests
 
 load_dotenv()
 
