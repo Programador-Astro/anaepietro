@@ -8,3 +8,4 @@ Flask-Mail
 dotenv
 Flask-Mail
 gunicorn
+flask-talisman
