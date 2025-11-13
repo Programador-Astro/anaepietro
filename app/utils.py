@@ -1,15 +1,16 @@
 #envio de email
 from flask_mail import Message
-from app import mail, app
-import secrets
-
+from app import mail
+import secrets, os
+from dotenv import load_dotenv
+load_dotenv()
 def enviar_email(destinatario, assunto, mensagem_html):
 
 
     try:
         msg = Message(
             subject=assunto,
-            sender=app.config['MAIL_USERNAME'],
+            sender=os.getenv('MAIL_USERNAME'),
             recipients=[destinatario],
             html=mensagem_html
         )

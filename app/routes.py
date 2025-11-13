@@ -1,8 +1,9 @@
 from flask import (
     jsonify, request, render_template, redirect,
-    url_for, flash
+    url_for, flash, current_app, Blueprint
 )
-from app import app, db
+
+from app.db import db
 from app.utils import enviar_email, gerar_token_seguro
 from app.models import Comentario, Pagamento, NotificacaoPagBank, Lista_presenca, Retorno
 from datetime import datetime
@@ -18,10 +19,13 @@ load_dotenv()
 LOG_FILE = ".pagbank_logs.log"
 TOKEN_USADO = 101
 
+routes_bp = Blueprint('routes_bp', __name__)
 
 # ============================================================
 # 🧾 Função auxiliar: grava logs estruturados
 # ============================================================
+
+
 def registrar_log(titulo: str, conteudo: dict):
     """Grava logs estruturados em arquivo .log"""
     try:
@@ -39,7 +43,7 @@ def registrar_log(titulo: str, conteudo: dict):
 # 🌍 Rotas principais
 # ============================================================
 
-@app.route('/')
+@routes_bp.route('/')
 def index():
     """Página inicial do site."""
     return render_template('index.html')
@@ -48,7 +52,7 @@ def index():
 # ============================================================
 # 💰 Pagamento via PagBank
 # ============================================================
-@app.route('/pagar', methods=['POST'])
+@routes_bp.route('/pagar', methods=['POST'])
 def pagar():
     """Cria checkout no PagBank e salva o pagamento."""
     from traceback import format_exc
@@ -148,7 +152,7 @@ def pagar():
 # ============================================================
 # 📡 Webhook PagBank
 # ============================================================
-@app.route('/notificacaopagbank', methods=['POST'])
+@routes_bp.route('/notificacaopagbank', methods=['POST'])
 def notificacao_pagbank():
     """Recebe notificações do PagBank e atualiza o pagamento."""
     try:
@@ -201,7 +205,7 @@ def notificacao_pagbank():
 # ============================================================
 # 💬 Comentários
 # ============================================================
-@app.route("/comentarios", methods=["GET"])
+@routes_bp.route("/comentarios", methods=["GET"])
 def get_comentarios():
     """Lista comentários em JSON."""
     comentarios = Comentario.query.order_by(Comentario.data_criacao.desc()).all()
@@ -215,9 +219,9 @@ def get_comentarios():
     ])
 
 
-@app.route("/comentar/", defaults={'token': None}, methods=["GET", "POST"])
-@app.route("/comentar/<token>", methods=["GET", "POST"])
-def criar_comentario(token):
+@routes_bp.route("/comentar/", defaults={'token': None}, methods=["GET", "POST"])
+@routes_bp.route("/comentar/<token>", methods=["GET", "POST"])
+def criar_comentario(token=''):
     """Página para comentar após o pagamento."""
     if request.method == "POST":
         comentario_texto = request.form.get("comentario", "").strip()
@@ -252,10 +256,14 @@ def criar_comentario(token):
         flash("Comentário salvo com sucesso! 🎉", "success")
         return redirect(url_for("index"))
 
-    return render_template("comentar.html", token=token)
+    if token == None:
+        return render_template('comentar.html')
+
+    return render_template('comentar.html', token=token)
 
 
-@app.route("/verificar_token", methods=["POST"])
+
+@routes_bp.route("/verificar_token", methods=["POST"])
 def verificar_token():
     """Verifica se o token é válido (AJAX)."""
     data = request.get_json() or {}
@@ -275,7 +283,7 @@ def verificar_token():
 # ============================================================
 # 🧍 Lista de presença
 # ============================================================
-@app.route('/lista/', methods=['GET', 'POST'])
+@routes_bp.route('/lista/', methods=['GET', 'POST'])
 def lista_convidados():
     """Gerencia a lista de presença."""
     if request.method == 'GET':
@@ -308,7 +316,7 @@ def lista_convidados():
     return render_template('lista_convidados.html')
 
 
-@app.route('/manager/<token>', methods=['GET'])
+@routes_bp.route('/manager/<token>', methods=['GET'])
 def manager(token):
     """Painel admin simples para gerenciar presença."""
     if token == 'admpi':
@@ -317,7 +325,7 @@ def manager(token):
     return redirect(url_for('index'))
 
 
-@app.route('/alterar_status_convidado/<int:presenca_id>', methods=['POST'])
+@routes_bp.route('/alterar_status_convidado/<int:presenca_id>', methods=['POST'])
 def alterar_status_convidado(presenca_id):
     """Atualiza o status de um convidado via painel admin."""
     novo_status = request.form.get('status')

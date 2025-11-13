@@ -8,96 +8,53 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-<style>
-  body {
-    background-color: #f0f2f5;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    padding-top: 50px;
-  }
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      padding-top: 60px;
+    }
 
-  .container {
-    max-width: 600px;
-    padding: 0 15px; /* espaçamento lateral no mobile */
-  }
+    .container {
+      max-width: 700px;
+    }
 
-  .comment-box {
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    padding: 30px;
-    transition: transform 0.2s;
-  }
-
-  .comment-box:hover {
-    transform: translateY(-3px);
-  }
-
-  textarea {
-    resize: none;
-    min-height: 120px;
-    font-size: 1rem;
-    padding: 12px;
-    border-radius: 8px;
-  }
-
-  .btn-success {
-    width: 100%;
-    font-weight: 600;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 1rem;
-  }
-
-  .alert {
-    margin-top: 15px;
-    font-size: 0.95rem;
-  }
-
-  /* Modal */
-  .modal-content {
-    border-radius: 15px;
-    padding: 0;
-  }
-
-  .modal-header {
-    background-color: #198754;
-    color: #fff;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    font-size: 1.1rem;
-  }
-
-  .modal-body input {
-    font-size: 1rem;
-    padding: 8px;
-    border-radius: 6px;
-  }
-
-  .modal-footer .btn {
-    font-size: 1rem;
-    padding: 10px;
-    border-radius: 8px;
-  }
-
-  @media (max-width: 576px) {
     .comment-box {
-      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      padding: 40px;
     }
 
     textarea {
-      min-height: 100px;
+      resize: none;
+      height: 150px;
     }
 
-    .modal-body p {
-      font-size: 0.95rem;
+    .btn-success {
+      width: 100%;
+      font-weight: 600;
     }
-  }
-</style>
 
+    .modal-content {
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      background-color: #198754;
+      color: white;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .fade.show {
+      backdrop-filter: blur(3px);
+    }
+  </style>
 </head>
 
 <body>
-
   <div class="container">
     <div class="comment-box mt-5">
       <h2 class="text-center text-success mb-4">
@@ -155,62 +112,56 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-window.addEventListener('load', function() {
-  const tokenServidor = "{{ token|default('') }}".trim();
-  const modalElement = document.getElementById('tokenModal');
-  const tokenInput = document.getElementById('tokenInput');
-  const comentarioField = document.getElementById('comentario');
-  const enviarBtn = document.getElementById('enviarBtn');
-  const verificarBtn = document.getElementById('verificarBtn');
-  const tokenInputModal = document.getElementById('tokenInputModal');
-  const tokenError = document.getElementById('tokenError');
+  document.addEventListener('DOMContentLoaded', function() {
+    const tokenServidor = "{{ token }}".trim();
+    const modalElement = document.getElementById('tokenModal');
+    const tokenInput = document.getElementById('tokenInput');
+    const comentarioField = document.getElementById('comentario');
+    const enviarBtn = document.getElementById('enviarBtn');
+    const verificarBtn = document.getElementById('verificarBtn');
+    const tokenInputModal = document.getElementById('tokenInputModal');
+    const tokenError = document.getElementById('tokenError');
 
-  // Verifica se há token válido vindo do servidor
-  if (!tokenServidor) {
-    comentarioField.disabled = true;
-    enviarBtn.disabled = true;
-
-    // Garante que o Bootstrap esteja carregado antes de exibir
-    const modal = new bootstrap.Modal(modalElement, { backdrop: 'static', keyboard: false });
-    setTimeout(() => {
+    // Se não há token na URL, mostra o modal
+    if (!tokenServidor) {
+      const modal = new bootstrap.Modal(modalElement, { backdrop: 'static', keyboard: false });
       modal.show();
-    }, 300); // pequeno delay para garantir renderização
 
-    verificarBtn.addEventListener('click', async function() {
-      const tokenDigitado = tokenInputModal.value.trim();
-      tokenError.classList.add('d-none');
+      verificarBtn.addEventListener('click', async function() {
+        const tokenDigitado = tokenInputModal.value.trim();
 
-      if (!tokenDigitado) {
-        tokenError.textContent = "Digite seu token.";
-        tokenError.classList.remove('d-none');
-        return;
-      }
+        if (!tokenDigitado) {
+          tokenError.textContent = "Digite seu token.";
+          tokenError.classList.remove('d-none');
+          return;
+        }
 
-      try {
-        const response = await fetch("/verificar_token", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: tokenDigitado })
-        });
-        const result = await response.json();
+        // Chama o backend para verificar o token
+        try {
+          const response = await fetch("/verificar_token", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: tokenDigitado })
+          });
+          const result = await response.json();
 
-        if (result.valido) {
-          comentarioField.disabled = false;
-          enviarBtn.disabled = false;
-          tokenInput.value = tokenDigitado;
-          tokenError.classList.add('d-none');
-          modal.hide();
-        } else {
-          tokenError.textContent = result.mensagem || "Token incorreto.";
+          if (result.valido) {
+            comentarioField.disabled = false;
+            enviarBtn.disabled = false;
+            tokenInput.value = tokenDigitado;
+            tokenError.classList.add('d-none');
+            modal.hide();
+          } else {
+            tokenError.textContent = result.mensagem;
+            tokenError.classList.remove('d-none');
+          }
+        } catch (error) {
+          tokenError.textContent = "Erro ao verificar token.";
           tokenError.classList.remove('d-none');
         }
-      } catch (error) {
-        tokenError.textContent = "Erro ao verificar token.";
-        tokenError.classList.remove('d-none');
-      }
-    });
-  }
-});
+      });
+    }
+  });
 </script>
 
 </body>
