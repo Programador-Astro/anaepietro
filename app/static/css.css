@@ -123,6 +123,10 @@ nav {
   width: 100%;
 }
 /* ===== SUAVIZA A LINHA ENTRE AS FOTOS (DESKTOP) ===== */
+.foto1 { background-image: url('https://i.imgur.com/uk81p37.jpeg'); }
+.foto2 { background-image: url('https://i.imgur.com/uirOYGT.jpeg'); }
+.foto3 { background-image: url('https://i.imgur.com/l6P4zFP.jpeg'); }
+
 @media (min-width: 769px) {
   .inicio {
     display: flex;
@@ -132,9 +136,6 @@ nav {
 
 .foto.lateral { flex: 1.3; }
 
-.foto1 { background-image: url('https://i.imgur.com/uk81p37.jpeg'); }
-.foto2 { background-image: url('https://i.imgur.com/uirOYGT.jpeg'); }
-.foto3 { background-image: url('https://i.imgur.com/l6P4zFP.jpeg'); }
 
   .foto {
     position: relative;
