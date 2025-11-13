@@ -229,8 +229,8 @@ def pagar():
                 "tax_id": cpf
             },
             "items": payload_items,
-            "notification_urls": ["https://anaepietro-env.up.railway.app/notificacaopagbank"],
-            "redirect_url": f"https://anaepietro-env.up.railway.app/comentar/{token}"
+            "notification_urls": ["https://www.anavitoriaepietro.com.br/notificacaopagbank"],
+            "redirect_url": f"https://www.anavitoriaepietro.com.br/comentar/{token}"
         }
 
         print("📤 Enviando payload ao PagBank:", json.dumps(payload, indent=2, ensure_ascii=False))
