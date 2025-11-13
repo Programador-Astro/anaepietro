@@ -7,3 +7,4 @@ requests
 Flask-Mail
 dotenv
 Flask-Mail
+gunicorn

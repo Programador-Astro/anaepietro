@@ -30,12 +30,35 @@ nav {
   font-family: "Love Light", cursive;
 }
 
+nav {
+  background-color: #003400;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  font-family: "Love Light", cursive;
+}
+
+/* ====== 2. NAVBAR ====== */
+nav {
+  background-color: #003400;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  font-family: "Love Light", cursive;
+}
+
 .logo {
   font-size: 1.8rem;
   letter-spacing: 1px;
   font-family: "Parisienne";
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links {
@@ -43,6 +66,8 @@ nav {
   display: flex;
   gap: 1.8rem;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links a {
@@ -50,6 +75,7 @@ nav {
   color: #fff;
   font-weight: 500;
   transition: color 0.3s ease;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .nav-links a:hover {
@@ -70,6 +96,7 @@ nav {
   border-radius: 3px;
   transition: 0.3s;
 }
+
 
 @media (max-width: 768px) {
   .nav-links {
