@@ -520,9 +520,15 @@ def get_comentarios():
 def criar_comentario(token):
     """
     Página para deixar comentários.
+    - Garante HTTPS (para evitar alerta de "não seguro")
     - Verifica o token antes de liberar o campo.
     - Após comentar, marca o token como usado.
     """
+    # 🔒 Redireciona automaticamente para HTTPS (se necessário)
+    if request.headers.get("X-Forwarded-Proto", "http") != "https":
+        https_url = request.url.replace("http://", "https://", 1)
+        return redirect(https_url, code=301)
+
     # [POST] — Envio do comentário
     if request.method == "POST":
         comentario_texto = request.form.get("comentario", "").strip()
@@ -549,19 +555,19 @@ def criar_comentario(token):
             flash("O comentário não pode estar vazio.", "warning")
             return render_template("comentar.html", token=token)
 
-        # Cria e salva o comentário
+        # ✅ Cria e salva o comentário
         novo_comentario = Comentario(
             convidado_nome=pagamento.nome,
             convidado_comentario=comentario_texto,
             pagamento_id=pagamento.id
         )
         db.session.add(novo_comentario)
-
-        pagamento.token = TOKEN_USADO  # Marca como usado
+        pagamento.token = TOKEN_USADO
         db.session.commit()
 
         flash("Comentário salvo com sucesso! 🎉", "success")
-        return redirect(url_for("index"))
+        # Redireciona sempre com HTTPS
+        return redirect(url_for("index", _scheme="https", _external=True))
 
     # [GET] — Renderiza a página
     if not token:
@@ -577,7 +583,6 @@ def criar_comentario(token):
         return render_template("comentar.html", token="")
 
     return render_template("comentar.html", token=token)
-
 
 @app.route("/verificar_token", methods=["POST"])
 def verificar_token():

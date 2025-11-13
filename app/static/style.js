@@ -275,7 +275,7 @@ async function carregarComentarios() {
       const div = document.createElement("div");
       div.classList.add("comentario");
       div.innerHTML = `
-        <p><strong>${c.convidado_nome}</strong> <span class="data">${c.data_criacao}</span></p>
+        <p><strong>${c.convidado_nome}</strong> </p>
         <p>${c.convidado_comentario}</p>
         <hr>
       `;
