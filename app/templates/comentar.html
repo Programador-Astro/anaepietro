@@ -8,50 +8,70 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-  <style>
-    body {
-      background-color: #f8f9fa;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      padding-top: 60px;
-    }
+ <style>
+  body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    padding-top: 60px;
+  }
 
-    .container {
-      max-width: 700px;
-    }
+  .container {
+    max-width: 700px;
+    padding: 0 15px; /* garante espaçamento em telas pequenas */
+  }
 
+  .comment-box {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    transition: all 0.3s ease;
+  }
+
+  textarea {
+    resize: none;
+    height: 150px;
+  }
+
+  .btn-success {
+    width: 100%;
+    font-weight: 600;
+  }
+
+  .modal-content {
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header {
+    background-color: #198754;
+    color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+
+  .fade.show {
+    backdrop-filter: blur(3px);
+  }
+
+  /* RESPONSIVO: Aumenta tamanho da caixa de comentários em mobile */
+  @media (max-width: 576px) {
     .comment-box {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      padding: 40px;
+      padding: 30px 20px;
     }
 
     textarea {
-      resize: none;
-      height: 150px;
+      height: 200px; /* mais espaço para digitar em celular */
+      font-size: 1rem;
     }
 
     .btn-success {
-      width: 100%;
-      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 12px 0;
     }
+  }
+</style>
 
-    .modal-content {
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .modal-header {
-      background-color: #198754;
-      color: white;
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
-    }
-
-    .fade.show {
-      backdrop-filter: blur(3px);
-    }
-  </style>
 </head>
 
 <body>

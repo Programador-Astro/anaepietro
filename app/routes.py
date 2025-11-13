@@ -181,12 +181,30 @@ def notificacao_pagbank():
 
                 if novo_status.upper() == "PAID":
                     assunto = "🎉 Pagamento confirmado!"
+                    url_comentario = f"https://www.anavitoriaepietro.com.br/comentar/{pagamento.token}"
                     mensagem_html = f"""
-                        <h2>Olá, {pagamento.nome or 'amigo(a)'}!</h2>
+                    <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                        <h2 style="color: #198754;">Olá, {pagamento.nome or 'amigo(a)'}!</h2>
                         <p>Seu presente foi recebido com sucesso 💖</p>
-                        <p>Use este token para comentar: <b>{pagamento.token}</b></p>
+                        <p>Agora você pode deixar seu comentário usando o link abaixo:</p>
+                        <p style="text-align:center; margin: 30px 0;">
+                            <a href="{url_comentario}" 
+                            style="
+                                    background-color: #198754; 
+                                    color: white; 
+                                    padding: 12px 24px; 
+                                    border-radius: 8px; 
+                                    text-decoration: none;
+                                    font-weight: bold;
+                                    display: inline-block;
+                            ">
+                                Deixar Comentário
+                            </a>
+                        </p>
+                        <p>Ou copie este token para acessar: <strong>{pagamento.token}</strong></p>
                         <p>Obrigado por participar desse momento especial!</p>
                         <p><strong>Ana & Pietro</strong></p>
+                    </div>
                     """
                     try:
                         enviar_email(pagamento.email_pagbank or pagamento.email_site, assunto, mensagem_html)
