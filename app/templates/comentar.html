@@ -89,7 +89,7 @@
         {% endif %}
       {% endwith %}
 
-      <form method="POST" action="/comentar/">
+      <form method="POST" action="/comentar">
         <input type="hidden" name="token" id="tokenInput" value="{{ token }}">
         <div class="mb-3">
           <textarea name="comentario" id="comentario" class="form-control" placeholder="Escreva seu comentário aqui..." required {% if not token %}disabled{% endif %}></textarea>

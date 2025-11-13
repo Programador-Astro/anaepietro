@@ -272,7 +272,7 @@ def criar_comentario(token=''):
         db.session.commit()
 
         flash("Comentário salvo com sucesso! 🎉", "success")
-        return redirect(url_for("index"))
+        return redirect('https://www.anavitoriaepietro.com.br/')
 
     if token == None:
         return render_template('comentar.html')

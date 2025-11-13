@@ -29,6 +29,10 @@ def create_app():
     # ===== INICIALIZA EXTENSÕES =====
     db.init_app(app)
     mail.init_app(app)
+    @app.before_request
+    def force_https():
+        if request.headers.get("X-Forwarded-Proto", "https") == "http":
+            return redirect(request.url.replace("http://", "https://", 1), code=301)
 
     # ===== HTTPS E CSP (apenas em produção) =====
     csp = {
