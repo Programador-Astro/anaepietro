@@ -239,8 +239,10 @@ def get_comentarios():
 
 @routes_bp.route("/comentar/", defaults={'token': None}, methods=["GET", "POST"])
 @routes_bp.route("/comentar/<token>", methods=["GET", "POST"])
-def criar_comentario(token=''):
+def criar_comentario(token):
     """Página para comentar após o pagamento."""
+
+    # --- POST ---
     if request.method == "POST":
         comentario_texto = request.form.get("comentario", "").strip()
         token = request.form.get("token", "").strip()
@@ -272,13 +274,15 @@ def criar_comentario(token=''):
         db.session.commit()
 
         flash("Comentário salvo com sucesso! 🎉", "success")
-        return redirect('https://www.anavitoriaepietro.com.br/')
+        return redirect("https://www.anavitoriaepietro.com.br/")
 
-    if token == None:
-        return render_template('comentar.html')
+    # --- GET ---
+    if token is None:
+        # rota: /comentar/
+        return render_template("comentar.html", token="")
 
-    return render_template('comentar.html', token=token)
-
+    # rota: /comentar/<token>
+    return render_template("comentar.html", token=token)
 
 
 @routes_bp.route("/verificar_token", methods=["POST"])
