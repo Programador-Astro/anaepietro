@@ -251,14 +251,14 @@ def criar_comentario(token):
         if not pagamento:
             flash("Token inválido.", "danger")
             return render_template("comentar.html", token="")
+        if pagamento.token == '101':
+            flash("Este token já foi utilizado.", "warning")
+            return render_template("comentar.html", token="")
 
         if pagamento.status != "PAID":
             flash("Pagamento ainda não foi confirmado.", "warning")
             return render_template("comentar.html", token="")
 
-        if pagamento.token == TOKEN_USADO:
-            flash("Este token já foi utilizado.", "warning")
-            return render_template("comentar.html", token="")
 
         if not comentario_texto:
             flash("O comentário não pode estar vazio.", "warning")
@@ -296,7 +296,7 @@ def verificar_token():
         return jsonify({"valido": False, "mensagem": "Token inválido."}), 200
     if pagamento.status != "PAID":
         return jsonify({"valido": False, "mensagem": "Pagamento não confirmado."}), 200
-    if pagamento.token == TOKEN_USADO:
+    if pagamento.token == '101':
         return jsonify({"valido": False, "mensagem": "Token já utilizado."}), 200
 
     return jsonify({"valido": True, "mensagem": "Token válido!"}), 200
