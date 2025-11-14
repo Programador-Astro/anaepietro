@@ -296,7 +296,7 @@ def verificar_token():
         return jsonify({"valido": False, "mensagem": "Token inválido."}), 200
     if pagamento.status != "PAID":
         return jsonify({"valido": False, "mensagem": "Pagamento não confirmado."}), 200
-    if pagamento.token == '101':
+    if pagamento.token == "101":
         return jsonify({"valido": False, "mensagem": "Token já utilizado."}), 200
 
     return jsonify({"valido": True, "mensagem": "Token válido!"}), 200
