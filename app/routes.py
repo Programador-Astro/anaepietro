@@ -27,17 +27,25 @@ routes_bp = Blueprint('routes_bp', __name__)
 
 
 def registrar_log(titulo: str, conteudo: dict):
-    """Grava logs estruturados em arquivo .log"""
+    """Grava logs estruturados na saída padrão (stdout) para o Railway coletar."""
     try:
-        with open(LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(f"\n{'='*80}\n")
-            f.write(f"🕓 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-            f.write(f"📘 {titulo}\n")
-            f.write(json.dumps(conteudo, indent=2, ensure_ascii=False))
-            f.write(f"\n{'='*80}\n")
-    except Exception as e:
-        print("⚠️ Erro ao registrar log:", e)
+        # Imprime o log formatado diretamente para stdout (que o Railway coleta)
+        print(f"\n{'='*80}")
+        print(f"🕓 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"📘 {titulo}")
+        # Usa print para o JSON formatado
+        print(json.dumps(conteudo, indent=2, ensure_ascii=False))
+        print(f"{'='*80}\n")
 
+        # ATENÇÃO: Se quiser manter o arquivo .log localmente:
+        # com open(LOG_FILE, "a", encoding="utf-8") as f:
+        #     f.write(f"\n{'='*80}\n")
+        #     ...
+        #     f.write(f"\n{'='*80}\n")
+        
+    except Exception as e:
+        # Usa print para o erro, garantindo que ele também apareça nos logs do Railway
+        print(f"⚠️ Erro ao registrar log: {e}")
 
 # ============================================================
 # 🌍 Rotas principais
@@ -75,7 +83,7 @@ def pagar():
             return jsonify({"error": "Dados incompletos."}), 400
 
         TOKEN = os.getenv('TOKEN')
-        url_api = "https://sandbox.api.pagseguro.com/checkouts"
+        url_api = "https://api.pagseguro.com/checkouts"
 
         headers = {
             "Authorization": f"Bearer {TOKEN}",
