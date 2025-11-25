@@ -1,22 +1,34 @@
-# Usa a imagem oficial do Python
+# -----------------------------
+#   DOCKERFILE PARA FLASK + GUNICORN
+# -----------------------------
+
+# Imagem base mínima
 FROM python:3.11-slim
 
-# Define o diretório de trabalho
+# Evita prompts interativos
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+# Diretório de trabalho
 WORKDIR /app
 
-# Copia e instala dependências
+# Instala dependências do sistema (necessário p/ psycopg2, mysqlclient etc)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    gcc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copia requirements e instala dependências
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia o restante do código
+# Copia o resto do projeto
 COPY . .
 
-# Expõe a porta padrão do Flask/Gunicorn
+# Expõe a porta
 EXPOSE 5000
 
-# Usa Gunicorn para rodar a aplicação
-#CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
-#CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--timeout", "120", "wsgi:app"]
-
-
-CMD [ "python", "run.py" ]
+# Comando FINAL de produção usando Gunicorn + WSGI
+CMD ["gunicorn", "wsgi:app", "--bind", "0.0.0.0:5000", "--workers", "3", "--timeout", "120"]
