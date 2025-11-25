@@ -75,7 +75,7 @@ def pagar():
             return jsonify({"error": "Dados incompletos."}), 400
 
         TOKEN = os.getenv('TOKEN')
-        url_api = "https://sandbox.api.pagseguro.com/checkouts"
+        url_api = "https://api.pagseguro.com/checkouts"
 
         headers = {
             "Authorization": f"Bearer {TOKEN}",
