@@ -1,27 +1,601 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Digite seu token</title>
-  <style>
-    body { font-family: Arial; background-color: #f5f5f5; padding: 50px; }
-    form { background: white; padding: 30px; max-width: 400px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px #ccc; }
-    input, button { width: 100%; padding: 10px; margin-top: 10px; }
-  </style>
-</head>
-<body>
-  <h2 style="text-align:center;">Informe seu token</h2>
-  
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <div style="color:red; text-align:center;">{{ messages[0] }}</div>
-    {% endif %}
-  {% endwith %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <form method="POST">
-    <label>Token recebido por e-mail:</label>
-    <input type="text" name="token" placeholder="Digite seu token"required>
-    <button type="submit">Acessar</button>
-  </form>
+    <title>Ana & Pietro | Nosso Casamento</title>
+
+    <link rel="stylesheet" href="static/css.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Love+Light&family=Parisienne&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet" />
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">Ana & Pietro</div>
+
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+     
+    <ul class="nav-links" id="nav-links">
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#data">Save the Date</a></li>
+            <li><a href="#casal">Nossa História</a></li>
+            <li><a href="#presentes">Presentes</a></li>
+            <li><a href="#mensagens">Mensagens</a></li>
+        </ul>
+    </nav>
+
+    <section id="inicio" class="inicio">
+        <div 
+class="foto foto1 lateral"></div>
+        <div class="foto foto2">
+            <div class="texto-centro">
+                <h1>Ana & Pietro</h1>
+                <p>Campo Grande - MS | 2025</p>
+            </div>
+        </div>
+        <div class="foto foto3 lateral"></div>
+    </section>
+
+    <section id="data" class="save-the-date">
+        <h2>O Grande Dia</h2>
+        <p>Está chegando a hora de celebrarmos nossa união. Contamos com sua presença!</p>
+        
+        <p style="margin-top: 3rem;">* * *</p>
+        <p>
+            **Cerimônia e Recepção** <br>
+     
+        25 de Outubro de 2025 | 19h00 <br>
+            Local: Espaço Celebrações (Rua Exemplo, 123)
+        </p>
+
+    </section>
+
+    <section id="casal" class="casal">
+        <div class="casal-header">
+            <h3>
+                “O amor é paciente, o amor é bondoso... Tudo sofre, tudo crê, tudo espera, tudo suporta.”
+            </h3>
+            <p class="versiculo-ref">— 1 Coríntios 13:4–7</p>
+        </div>
+
+        <div class="galeria">
+            <div class="slides">
+                <img src="static/img/ft1.png" class="ativo" alt="foto1" />
+                <img src="static/img/ft2.png" alt="foto2" />
+               
+  <img src="static/img/ft3.png" alt="foto3" />
+                <img src="static/img/ft4.png" alt="foto4" />
+                <img src="static/img/ft5.png" alt="foto5" />
+            </div>
+
+            <div class="miniaturas">
+                <img src="static/img/ft1.png" class="ativo" alt="miniatura 1" />
+            
+      <img src="static/img/ft2.png" alt="miniatura 2" />
+                <img src="static/img/ft3.png" alt="miniatura 3" />
+                <img src="static/img/ft4.png" alt="miniatura 4" />
+                <img src="static/img/ft5.png" alt="miniatura 5" />
+            </div>
+        </div>
+    </section>
+
+    <section id="presentes" class="presentes">
+  
+       <h2>Nossa Lista de Presentes</h2>
+
+        <div class="linha-presentes">
+            <h3>🎁 Presentes para a Casa Nova dos Noivos</h3>
+            <div class="scroll-container">
+
+                <div class="card" data-nome="Cama Box Casal Ortobom" data-preco="1614.99" data-img="/static/img/cama.webp">
+                    <img src="/static/img/cama.webp" alt="cama">
+     
+                <div class="card-content">
+                        <h4>Cama Box Casal (Box + Colchão) Ortobom de Mola.</h4>
+                        <p>Ortotech 61cm de Altura + 2 Travesseiros Nápoles.</p>
+                     
+        <span class="price">R$ 1.614,99</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+
+                <div class="card" data-nome="Fogão Atlas 5 Bocas" data-preco="901.45" data-img="/static/img/fogão.jpg">
+          
+           <img src="/static/img/fogão.jpg" alt="fogão">
+                    <div class="card-content">
+                        <h4>Fogão Atlas 5 Bocas Mônaco Top Glass</h4>
+                        <p>Com Acendimento automático - Bivolt.</p>
+         
+                <span class="price">R$ 901,45</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                
+     
+            <div class="card" data-nome="Mesa de Jantar 4 Cadeiras" data-preco="1329.00" data-img="/static/img/mesa.webp">
+                    <img src="/static/img/mesa.webp" alt="mesa">
+                    <div class="card-content">
+                        <h4>Mesa de Jantar 4 Cadeiras Retangular Cinza Saara</h4>
+       
+                  <p>Saara DJ Móveis Siena.</p>
+                        <span class="price">R$ 1.329,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+        
+         </div>
+                <div class="card" data-nome="Ar-Condicionado LG Dual Inverter" data-preco="2663.10" data-img="/static/img/arcond.avif">
+                    <img src="/static/img/arcond.avif" alt="ar">
+                    <div class="card-content">
+                        <h4>Ar-Condicionado LG 
+ AI Dual Inverter Voice</h4>
+                        <p>12.000 BTU Quente/Frio 220V</p>
+                        <span class="price">R$ 2.663,10</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                  
+   </div>
+                </div>
+                <div class="card" data-nome="Geladeira Brastemp Frost Free" data-preco="3189.89" data-img="/static/img/geladeira.png">
+                    <img src="/static/img/geladeira.png" alt="geladeira">
+                    <div class="card-content">
+                
+         <h4>Geladeira Brastemp Frost Free Duplex 375 Litros</h4>
+                        <p>Cor Inox com Espaço Adapt - BRM45JK</p>
+                        <span class="price">R$ 3.189,89</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+    
+                 </div>
+                </div>
+                <div class="card" data-nome="Sofá Retrátil 2 Lugares" data-preco="1700.00" data-img="/static/img/sofa.jpg">
+                    <img src="/static/img/sofa.jpg" alt="sofa">
+                    <div class="card-content">
+  
+                       <h4>Sofá Retrátil 2 Lugares 1,80m Liz Suede Cinza</h4>
+                        <p>Adonai Estofados</p>
+                        <span class="price">R$ 1.700,00</span> <br>
+                   
+      <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Micro-Ondas Mondial Espelhado" data-preco="669.00" data-img="/static/img/micro.jpg">
+                    <img src="/static/img/micro.jpg" alt="micro-ondas">
+              
+       <div class="card-content">
+                        <h4>Micro-Ondas, Mondial Espelhado, 1400W</h4>
+                        <p>110V - MO-02-34-E</p>
+                        <span class="price">R$ 669,00</span> <br>
+             
+            <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Samsung Smart TV 50" data-preco="2074.96" data-img="/static/img/tv.jpg">
+                    <img src="/static/img/tv.jpg" alt="tv">
+       
+              <div class="card-content">
+                        <h4>Samsung Smart TV 50" Crystal UHD 4K U8100F 2025</h4>
+                        <p></p>
+                        <span class="price">R$ 2.074,96</span> <br>
+   
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Lava-Louça Electrolux 8 Serviços" data-preco="1899.00" data-img="/static/img/laval.webp">
+                   
+  <img src="/static/img/laval.webp" alt="lava louças">
+                    <div class="card-content">
+                        <h4>Lava-Louça Electrolux 8 Serviços Branca</h4>
+                        <p>Programa Lava & Seca 50 min (LB08E)</p>
+                 
+        <span class="price">R$ 1.899,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Máquina de Lavar 14 Kg Philco" data-preco="1950.35" data-img="/static/img/lavaroupas1.jpg">
+    
+                 <img src="/static/img/lavaroupas1.jpg" alt="lava roupas">
+                    <div class="card-content">
+                        <h4>Máquina de Lavar 14 Kg Philco PLR14B</h4>
+                        <p>12 Programas de Lavagem 220V</p>
+  
+                       <span class="price">R$ 1.950,35</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+              
+   <div class="card" data-nome="Panela Elétrica Electrolux Rita Lobo" data-preco="279.90" data-img="/static/img/panela1.webp">
+                    <img src="/static/img/panela1.webp" alt="panela 1">
+                    <div class="card-content">
+                        <h4>Panela Elétrica Electrolux por Rita Lobo</h4>
+                 
+        <p>1,8L Preta Experience Digital (ECC20) 220V</p>
+                        <span class="price">R$ 279,90</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                
+ </div>
+                <div class="card" data-nome="Panela de Pressão Elétrica Mondial" data-preco="377.52" data-img="/static/img/panela pressão.jpg">
+                    <img src="/static/img/panela pressão.jpg" alt="panela 2">
+                    <div class="card-content">
+                        <h4>Panela de Pressão Elétrica Mondial Digital 
+ 5l</h4>
+                        <p>Preto/Inox, 900W, 110V - PE-38</p>
+                        <span class="price">R$ 377,52</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    
+ </div>
+                </div>
+                <div class="card" data-nome="Liquidificador Mondial Turbo Power" data-preco="85.43" data-img="/static/img/liquidificador.jpg">
+                    <img src="/static/img/liquidificador.jpg" alt="liquidificador">
+                    <div class="card-content">
+                  
+       <h4>Liquidificador Mondial Turbo Power 550W</h4>
+                        <p>220V, Preto, 2,2 L - L-99 FB</p>
+                        <span class="price">R$ 85,43</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+        
+             </div>
+                </div>
+                <div class="card" data-nome="Air Fryer 5L Mondial" data-preco="322.00" data-img="/static/img/fritadeira.jpg">
+                    <img src="/static/img/fritadeira.jpg" alt="fritadeira">
+                    <div class="card-content">
+      
+                   <h4>Air Fryer 5L, Mondial Preto/Inox, 1900W</h4>
+                        <p>220V - AFN-50-BI</p>
+                        <span class="price">R$ 322,00</span> <br>
+                        
+ <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Batedeira Bella Massa Mondial" data-preco="129.12" data-img="/static/img/bate.jpg">
+                    <img src="/static/img/bate.jpg" alt="batedeira">
+                  
+   <div class="card-content">
+                        <h4>Batedeira Bella Massa, Mondial</h4>
+                        <p>Preto/Inox, 500W, 110V - B-23 NP</p>
+                        <span class="price">R$ 129,12</span> <br>
+              
+           <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="linha-presentes">
+            <h3>🎉 Mimos para os Noivos (Ajuda Criativa)</h3>
+      
+       <div class="scroll-container">
+                
+                <div class="card" data-nome="Taxa para o Buquê Cair" data-preco="100.00" data-img="/static/img/taxa para cair.jpg">
+                    <img src="/static/img/taxa para cair.jpg" alt="Buquê Cair">
+                    <div class="card-content">
+     
+                    <h4>Quer o Buquê?</h4>
+                        <p>Taxa para o Buquê CAIR na sua mão!</p>
+                        <span class="price">R$ 100,00</span> <br>
+                     
+        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+
+                <div class="card" data-nome="Taxa para o Buquê NÃO Cair" data-preco="90.00" data-img="/static/img/taxa para não cair.jpg">
+                    <img src="/static/img/taxa para não cair.jpg" alt="Buquê Não Cair">
+     
+                <div class="card-content">
+                        <h4>Não quer o Buquê?</h4>
+                        <p>Taxa para o Buquê NÃO cair na sua mão!</p>
+                        <span 
+ class="price">R$ 90,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                
+                <div class="card" data-nome="Claro que eu 
+ posso pagar." data-preco="499.00" data-img="/static/img/rochele.jpg">
+                    <img src="/static/img/rochele.jpg" alt="Rochele">
+                    <div class="card-content">
+                        <h4>Claro que eu posso pagar.</h4>
+                        <p>Meu marido 
+ tem 2 empregos!</p>
+                        <span class="price">R$ 499,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+          
+       <div class="card" data-nome="PIX Pão Duro" data-preco="49.99" data-img="/static/img/pix pao duro.jpg">
+                    <img src="/static/img/pix pao duro.jpg" alt="Pão Duro">
+                    <div class="card-content">
+                        <h4>PIX</h4>
+                
+         <p>Pão duro!</p>
+                        <span class="price">R$ 49,99</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+   
+              <div class="card" data-nome="Pra não dizer que não deu nada!" data-preco="150.00" data-img="/static/img/para nao dizer.jpg">
+                    <img src="/static/img/para nao dizer.jpg" alt="Não deu nada">
+                    <div class="card-content">
+                        <h4>Pra não dizer que 
+ não deu nada!!</h4>
+                        <p></p>
+                        <span class="price">R$ 150,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+  
+               </div>
+                <div class="card" data-nome="Aviãozinho de dinheiro!" data-preco="800.00" data-img="/static/img/silvio santos.jpg">
+                    <img src="/static/img/silvio santos.jpg" alt="Silvio Santos">
+                    <div class="card-content">
+                  
+       <h4>Aviãozinho de dinheiro!</h4>
+                        <p></p>
+                        <span class="price">R$ 800,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                
+     </div>
+                </div>
+                <div class="card" data-nome="Pra cobrir a noivade RAZÃO!" data-preco="150.00" data-img="/static/img/razão.jpg">
+                    <img src="/static/img/razão.jpg" alt="Noivade Razão">
+                    <div class="card-content">
+            
+             <h4>Pra cobrir a noivade RAZÃO!</h4>
+                        <p></p>
+                        <span class="price">R$ 150,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+        
+             </div>
+                </div>
+                <div class="card" data-nome="Pix Solidário!" data-preco="10.00" data-img="/static/img/orçamento.jpg">
+                    <img src="/static/img/orçamento.jpg" alt="Pix Solidário">
+                    <div class="card-content">
+       
+                  <h4>Pix Solidário!</h4>
+                        <p></p>
+                        <span class="price">R$ 10,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+      
+               </div>
+                </div>
+                <div class="card" data-nome="Ajudinha no cafe da manhã" data-preco="89.90" data-img="/static/img/cafe.jpg">
+                    <img src="/static/img/cafe.jpg" alt="Café da Manhã">
+                    <div class="card-content">
+ 
+                        <h4>Ajudinha no cafe da manhã do aeroporto!</h4>
+                        <p></p>
+                        <span class="price">R$ 89,90</span> <br>
+                    
+     <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Psicólogos para os noivos" data-preco="259.97" data-img="/static/img/psc.jpg">
+                    <img src="/static/img/psc.jpg" alt="Psicólogos">
+              
+       <div class="card-content">
+                        <h4>Psicólogos para os noivos não surtarem!</h4>
+                        <p></p>
+                        <span class="price">R$ 259,97</span> <br>
+             
+            <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Corte de cabelo pro noivo de 6 meses" data-preco="429.90" data-img="/static/img/corte.jpg">
+                    <img src="/static/img/corte.jpg" alt="Corte de Cabelo">
+ 
+                    <div class="card-content">
+                        <h4>Corte de cabelo pro noivo de 6 meses...</h4>
+                        <p></p>
+                        <span 
+ class="price">R$ 429,90</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Pagar o show da xuxa!" data-preco="324.90" data-img="/static/img/xuxa.jpg">
+             
+        <img src="/static/img/xuxa.jpg" alt="Show da Xuxa">
+                    <div class="card-content">
+                        <h4>Pagar o show da xuxa!</h4>
+                        <p></p>
+                
+         <span class="price">R$ 324,90</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Curso de culinária para noiva." data-preco="199.90" data-img="/static/img/curso.jpg">
+    
+                 <img src="/static/img/curso.jpg" alt="Curso de Culinária">
+                    <div class="card-content">
+                        <h4>Curso de culinária para noiva.</h4>
+                        <p>Coitado do noivo!</p>
+     
+                    <span class="price">R$ 199,90</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div 
+ class="card" data-nome="Foto com os noivos." data-preco="74.70" data-img="/static/img/foto com os noivos.jpg">
+                    <img src="/static/img/foto com os noivos.jpg" alt="Foto com os noivos">
+                    <div class="card-content">
+                        <h4>Foto com os noivos.</h4>
+               
+           <p></p>
+                        <span class="price">R$ 74,70</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+   
+              <div class="card" data-nome="Calmante para os noivos." data-preco="80.00" data-img="/static/img/calmante.jpg">
+                    <img src="/static/img/calmante.jpg" alt="Calmante">
+                    <div class="card-content">
+                        <h4>Calmante para os noivos.</h4>
+          
+               <p></p>
+                        <span class="price">R$ 80,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+              
+   </div>
+                <div class="card" data-nome="Pix para perguntar pros noivos quando vai ter filho." data-preco="480.00" data-img="/static/img/filho.jpg">
+                    <img src="/static/img/filho.jpg" alt="Filho">
+                    <div class="card-content">
+                        <h4>Pix para perguntar 
+ pros noivos quando vai ter filho.</h4>
+                        <p></p>
+                        <span class="price">R$ 480,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                   
+  </div>
+                </div>
+                <div class="card" data-nome="Garantir primeiro lugar na fila do buffet." data-preco="120.00" data-img="/static/img/buffet.jpg">
+                    <img src="/static/img/buffet.jpg" alt="Fila do Buffet">
+                    <div class="card-content">
+            
+             <h4>Garantir primeiro lugar na fila do buffet.</h4>
+                        <p></p>
+                        <span class="price">R$ 120,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+      
+               </div>
+                </div>
+                <div class="card" data-nome="Spar da noiva." data-preco="95.50" data-img="/static/img/spar.jpg">
+                    <img src="/static/img/spar.jpg" alt="Spar da Noiva">
+                    <div class="card-content">
+   
+                      <h4>Spar da noiva.</h4>
+                        <p></p>
+                        <span class="price">R$ 95,50</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+ 
+                    </div>
+                </div>
+                <div class="card" data-nome="Calmante para o dia do Casamento." data-preco="79.90" data-img="/static/img/calmante2.jpg">
+                    <img src="/static/img/calmante2.jpg" alt="Calmante Casamento">
+                 
+    <div class="card-content">
+                        <h4>Calmante para o dia do Casamento.</h4>
+                        <p></p>
+                        <span class="price">R$ 79,90</span> <br>
+                
+         <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="1 ano de Netflix." data-preco="499.90" data-img="/static/img/netflix.jpg">
+                    <img src="/static/img/netflix.jpg" alt="Netflix">
+          
+           <div class="card-content">
+                        <h4>1 ano de Netflix.</h4>
+                        <p></p>
+                        <span class="price">R$ 499,90</span> <br>
+           
+              <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Cota do ar condicionado." data-preco="140.00" data-img="/static/img/ar.jpg">
+                    <img src="/static/img/ar.jpg" alt="Ar Condicionado">
+    
+                 <div class="card-content">
+                        <h4>Cota do ar condicionado.</h4>
+                        <p>para não torrar no calor</p>
+                        <span class="price">R$ 140,00</span> <br>
+ 
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Vale picanha." data-preco="60.00" data-img="/static/img/picanha.jpg">
+                   
+  <img src="/static/img/picanha.jpg" alt="Vale Picanha">
+                    <div class="card-content">
+                        <h4>Vale picanha.</h4>
+                        <p></p>
+                        <span class="price">R$ 
+ 60,00</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+                <div class="card" data-nome="Se tá duro dorme valor 1,99." data-preco="1.99" data-img="/static/img/duro dorme.jpg">
+            
+         <img src="/static/img/duro dorme.jpg" alt="Se tá duro dorme">
+                    <div class="card-content">
+                        <h4>Se tá duro dorme valor 1,99.</h4>
+                        <p></p>
+            
+             <span class="price">R$ 1,99</span> <br>
+                        <button class="add-to-cart">Adicionar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    
+ </section>
+
+    <section id="mensagens" class="comentarios">
+        <h2>Mensagens dos Convidados</h2>
+        <div id="comentariosContainer">
+            <p>Carregando comentários...</p>
+        </div>
+    </section>
+
+    <div class="cart-icon" id="cartIcon">
+        🛒
+        <span id="cartCount">0</span>
+    </div>
+
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+        
+         <span class="close-modal" id="closeCart">&times;</span>
+            <h2>Seu Carrinho</h2>
+            <div id="cartItems" class="cart-items">
+                <p class="empty">Seu carrinho está vazio 😔</p>
+            </div>
+            <div class="cart-total">
+                <span id="cartTotalDisplay">Total: R$ 0,00</span>
+  
+           </div>
+            <button class="btn-pagar" id="btnPagar">Pagar 💳</button>
+        </div>
+    </div>
+    
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span id="closeCheckout" class="close">&times;</span>
+            <h2>Finalize seu Presente</h2>
+
+            <form id="checkoutForm">
+   
+              <label for="nome">Nome completo:</label>
+                <input type="text" id="nome" name="nome" required />
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required />
+
+                <label for="cpf">CPF (somente números):</label>
+       
+         <input type="text" id="cpf" name="cpf" required pattern="\d{11}" title="Digite 11 números" maxlength="11" />
+
+                <button type="submit" class="btn-submit">Ir para Pagamento</button>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy;
+ 2025 Ana & Pietro. Site criado com 💖.</p>
+    </footer>
+    
+    <script src="main.js" defer></script>
+    <script src="navbar.js" defer></script> 
+    
 </body>
 </html>
