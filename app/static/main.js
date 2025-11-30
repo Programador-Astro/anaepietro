@@ -40,8 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 4500);
     })();
 
-
-
     /* ============================================================
        BOOTSTRAP MODALS
     ============================================================ */
@@ -50,8 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalLoader = new bootstrap.Modal(document.getElementById("modalLoader"));
 
     /* ============================================================
-       RESTANTE DO SEU CÓDIGO (CARRINHO + COMENTÁRIOS + NAVBAR)
-       >>> NADA FOI ALTERADO <<<
+       CARRINHO
     ============================================================ */
 
     const STORAGE_KEY = "carrinho_v1";
@@ -203,6 +200,15 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => modalCheckout.show(), 300);
     });
 
+    /* ============================================================
+       CHECKOUT — CAPTURA DOS DADOS
+    ============================================================ */
+
+    // 🔥 CORREÇÃO — declarando os inputs
+    const nomeInput = document.getElementById("nome");
+    const emailInput = document.getElementById("email");
+    const cpfInput = document.getElementById("cpf");
+
     document.getElementById("checkoutForm").addEventListener("submit", async e => {
         e.preventDefault();
 
@@ -245,6 +251,9 @@ document.addEventListener("DOMContentLoaded", () => {
         modalLoader.hide();
     });
 
+    /* ============================================================
+       COMENTÁRIOS
+    ============================================================ */
     async function carregarComentarios() {
         const cont = document.getElementById("comentariosContainer");
         cont.innerHTML = "<p>Carregando...</p>";
@@ -271,6 +280,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    /* ============================================================
+       NAVBAR MOBILE
+    ============================================================ */
     const menuToggle = document.getElementById("menu-toggle");
     const navLinks = document.getElementById("nav-links");
 
@@ -286,6 +298,9 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     );
 
+    /* ============================================================
+       INICIALIZAÇÃO
+    ============================================================ */
     carregarCarrinho();
     ligarBotoesAdicionar();
     carregarComentarios();
