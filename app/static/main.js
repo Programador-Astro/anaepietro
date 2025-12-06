@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const nome = nomeInput.value.trim();
         const email = emailInput.value.trim();
-        const cpf = cpfInput.value.trim();
+        const cpf = cpfInput.value.replace(/\D/g, "");
 
         if (!nome || !email || !cpf) return alert("Preencha tudo!");
 
