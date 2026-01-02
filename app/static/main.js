@@ -236,4 +236,3 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 });
 
- git config --global user.email "programadorastro@gmail.com"
