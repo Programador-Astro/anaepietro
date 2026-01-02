@@ -3,24 +3,40 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ana Vitoria & Pietro</title>
+    <title>Ana Vitória & Pietro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/static/css.css">
 </head>
 <body>
 
     <section id="intro">
-        <video id="introVideo" playsinline autoplay muted preload="auto">
-            <source src="/static/video/vid.mp4" type="video/mp4">
-        </video>
+        
+        <div id="introFotos">
+            <div class="foto foto1"></div>
+            <div class="foto foto2"></div>
+            <div class="foto foto3"></div>
+        </div>
+
+        <div id="desktop-hero">
+            <h1 class="hero-title">Ana Vitória & Pietro</h1>
+            <p class="hero-date">10 • 01 • 2026</p>
+        </div>
+
+        <div id="mobile-video-container">
+            <video id="introVideo" autoplay muted playsinline>
+                <source src="/static/video/vid.mp4" type="video/mp4">
+            </video>
+        </div>
+
         <div id="countdown" class="hidden">
             <div class="countdown-box">
                 <h2>Falta pouco para o grande dia</h2>
-                <div id="timer"> 
-                    <span id="dias">0</span>d <span id="horas">0</span>h
-                    <span id="minutos">0</span>m <span id="segundos">0</span>s
+                <div id="timer">
+                    <span id="dias">0</span>d
+                    <span id="horas">0</span>h
+                    <span id="minutos">0</span>m
                 </div>
-                <div class="countdown-date">10/01/26</div>
+                <div class="countdown-date">10/01/2026</div>
             </div>
         </div>
     </section>
@@ -33,7 +49,7 @@
     </div>
 
     <section id="galeria">
-        <h2>Nossas Memórias</h2>
+        <h2 class="memorias">Nossas Memórias</h2>
         <div class="carrosel">
             <img id="carouselImage" src="/static/img/ft1.png" class="carrosel-main">
         </div>
@@ -44,147 +60,332 @@
             <img class="thumb" src="/static/img/ft4.png" data-image="/static/img/ft4.png">
         </div>
     </section>
-<!-- SEÇÃO 1: Presentes reais -->
+
 
 <section class="loja-section" id="presentes">
-
     <h2>🎁 Presentes para a Casa Nova</h2>
-
-
-
     <div class="store-grid">
+        
+
+
+       
 
         <div class="store-item">
-
-            <img src="/static/img/fogão.jpg">
-
-            <h4>Fogão</h4>
-
-            <p class="price"></p>
-
-            <button>Ir para a loja</button>
-
+            <img src="/static/img/arcond.avif">
+            <h4>Ar-Condicionado LG Dual Inverter</h4>
+            <p>12.000 BTU Quente/Frio</p>
+            <a href="https://share.google/orcPCgHnL6shB56qM" target="_blank" class="btn-loja-externa">Ir para a loja</a>
         </div>
 
-
-
-                <div class="store-item">
-
-            <img src="/static/img/fogão.jpg">
-
-            <h4>Fogão</h4>
-
-            <p class="price"></p>
-
-            <button>Ir para a loja</button>
-
+        <div class="store-item">
+            <img src="/static/img/geladeira.png">
+            <h4>Geladeira Brastemp Frost Free</h4>
+            <p>Duplex 375 Litros Inox</p>
+            <a href="https://share.google/Kn0A3zgQybTS7tMnd" target="_blank" class="btn-loja-externa">Ir para a loja</a>
         </div>
 
-       
-
-                <div class="store-item">
-
-            <img src="/static/img/fogão.jpg">
-
-            <h4>Fogão</h4>
-
-            <p class="price"></p>
-
-            <button>Ir para a loja</button>
-
+        <div class="store-item">
+            <img src="/static/img/sofa.jpg">
+            <h4>Sofá Retrátil 2 Lugares</h4>
+            <p>1,80m Suede Cinza</p>
+            <a href="https://a.co/d/7UPXyEP" target="_blank" class="btn-loja-externa">Ir para a loja</a>
         </div>
 
-       
-
-                <div class="store-item">
-
-            <img src="/static/img/fogão.jpg">
-
-            <h4>Fogão</h4>
-
-            <p class="price"></p>
-
-            <button>Ir para a loja</button>
-
+        <div class="store-item">
+            <img src="/static/img/micro.jpg">
+            <h4>Micro-Ondas Mondial Espelhado</h4>
+            <p>1400W 110V</p>
+            <a href="https://a.co/d/8z71JcY" target="_blank" class="btn-loja-externa">Ir para a loja</a>
         </div>
 
-       
+        <div class="store-item">
+            <img src="/static/img/tv.jpg">
+            <h4>Samsung Smart TV 50"</h4>
+            <p>Crystal UHD 4K 2025</p>
+            <a href=" https://m.casasbahia.com.br/samsung-smart-tv-50-crystal-uhd-4k-u8100f-2025-xbox-cloud-gaming-canais-gratuitos-alexa-1572412223.html" target="_blank" class="btn-loja-externa">Ir para a loja</a>
+        </div>
 
-       
+        <div class="store-item">
+            <img src="/static/img/laval.webp">
+            <h4>Lava-Louça Electrolux</h4>
+            <p>8 Serviços Branca</p>
+            <a href="https://m.magazineluiza.com.br/lava-louca-electrolux-8-servicos-branca-com-programa-lava-seca-50-min-lb08e/p/aefgb7b1g3/ed/psls/?&gad_campaignid=22387258228&gad_source=1&gbraid=0AAAAAD4zZmTOrDJjBtgn6zXQ0CtJMe3H0&gclsrc=aw.ds&partner_id=79383&seller_id=electrolux&utm_campaign=google_eco_per_ven_pla_ele_sor_3p_ed1-ed2-csp&utm_content=&utm_medium=cpc&utm_source=google&utm_term=79383?partner_id=64853&utm_source=pdp_desk&utm_medium=share" target="_blank" class="btn-loja-externa">Ir para a loja</a>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/lavaroupas1.jpg">
+            <h4>Máquina de Lavar 14 Kg Philco</h4>
+            <p>12 Programas 220V</p>
+            <a href="https://a.co/d/ga5fFlp" target="_blank" class="btn-loja-externa">Ir para a loja</a>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/panela1.webp">
+            <h4>Panela Elétrica Electrolux por Rita Lobo</h4>
+            <p>1,8L Preta Experience Digital (ECC20) 220V</p>
+            <a href="https://m.magazineluiza.com.br/panela-eletrica-electrolux-por-rita-lobo-18l-preta-experience-digital-ecc20/p/709298100/ep/elpz/?partner_id=64853&utm_source=pdp_desk&utm_medium=share" target="_blank" class="btn-loja-externa">Ir para a loja</a>
+        </div>
+      
+        <div class="store-item">
+            <img src="/static/img/liquidificador.jpg">
+            <h4>Liquidificador Mondial Turbo Power 550W</h4>
+            <p>220V, Preto, 2,2 L - L-99 FB</p>
+            <a href="https://m.magazineluiza.com.br/liquidificador-mondial-turbo-power-l-99-fb-preto-com-filtro-3-velocidades-550w/p/021756700/ep/liqu/?partner_id=64853&utm_source=pdp_desk&utm_medium=share" target="_blank" class="btn-loja-externa">Ir para a loja</a>
+        </div>
+      
+        <div class="store-item">
+            <img src="/static/img/bate.jpg" alt="batedeira">
+            <h4>Batedeira Bella Massa, Mondial</h4>
+            <p>Preto/Inox, 500W, 110V - B-23 NP</p>
+            <a href="https://m.magazineluiza.com.br/batedeira-mondial-400w-bella-massa-b-23-np-4-velocidades/p/224206100/ep/btdc/?partner_id=64853&utm_source=pdp_desk&utm_medium=share" target="_blank" class="btn-loja-externa">Ir para a loja</a>
+        </div>
+      
+        <div class="store-item">
+            <img src="/static/img/forno.webp" alt="forno">
+            <h4>Forno Elétrico de Bancada Nardelli Top </h4>
+            <p>60 Litros Função Grill Preto</p>
+            <a href="https://m.magazineluiza.com.br/forno-eletrico-de-bancada-nardelli-top-60-litros-funcao-grill-preto/p/gcebahbkhb/ed/frne/?partner_id=64853&utm_source=pdp_desk&utm_medium=share" target="_blank" class="btn-loja-externa">Ir para a loja</a>
+        </div>
 
     </div>
-
 </section>
-    <section class="loja-section" id="mimos">
-        <h2>🎉 Mimos para os Noivos</h2>
-        <div class="store-grid">
-            <div class="store-item">
-                <img src="/static/img/ar.jpg">
-                <h4>Taxa do ar-condicionado</h4>
-                <p class="price">R$ 199,00</p>
-                <button class="add-to-cart" data-id="1" data-name="Taxa do ar-condicionado" data-price="199.00">
-                    Adicionar
-                </button>
-            </div>
-            <div class="store-item">
-                <img src="/static/img/outro.jpg">
-                <h4>Jantar Romântico</h4>
-                <p class="price">R$ 150,00</p>
-                <button class="add-to-cart" data-id="2" data-name="Jantar Romântico" data-price="150.00">
-                    Adicionar
-                </button>
-            </div>
-            </div>
+<section class="loja-section" id="mimos">
+    <h2>🎉 Mimos para os Noivos (Ajuda Criativa)</h2>
+    <div class="store-grid">
+        
+        <div class="store-item">
+            <img src="/static/img/taxa para cair.jpg">
+            <h4>Quer o Buquê?</h4>
+            <p>Taxa para o Buquê CAIR na sua mão!</p>
+            <p class="price">R$ 100,00</p>
+            <button class="add-to-cart" data-name="Taxa para o Buquê Cair" data-price="100.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/taxa para não cair.jpg">
+            <h4>Não quer o Buquê?</h4>
+            <p>Taxa para o Buquê NÃO cair na sua mão!</p>
+            <p class="price">R$ 90,00</p>
+            <button class="add-to-cart" data-name="Taxa para o Buquê NÃO Cair" data-price="90.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/rochele.jpg">
+            <h4>Claro que eu posso pagar.</h4>
+            <p>Meu marido tem 2 empregos!</p>
+            <p class="price">R$ 499,00</p>
+            <button class="add-to-cart" data-name="Claro que eu posso pagar" data-price="499.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/pix pao duro.jpg">
+            <h4>PIX Pão Duro</h4>
+            <p>Pão duro!</p>
+            <p class="price">R$ 49,99</p>
+            <button class="add-to-cart" data-name="PIX Pão Duro" data-price="49.99">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/para nao dizer.jpg">
+            <h4>Pra não dizer que não deu nada!!</h4>
+            <p>Contribuição livre</p>
+            <p class="price">R$ 150,00</p>
+            <button class="add-to-cart" data-name="Pra não dizer que não deu nada" data-price="150.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/silvio santos.jpg">
+            <h4>Aviãozinho de dinheiro!</h4>
+            <p>Quem quer dinheiro?</p>
+            <p class="price">R$ 800,00</p>
+            <button class="add-to-cart" data-name="Aviãozinho de dinheiro" data-price="800.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/razão.jpg">
+            <h4>Noiva de RAZÃO!</h4>
+            <p>Pra cobrir a noiva de razão</p>
+            <p class="price">R$ 150,00</p>
+            <button class="add-to-cart" data-name="Cota Razão da Noiva" data-price="150.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/orçamento.jpg">
+            <h4>Pix Solidário!</h4>
+            <p>Qualquer ajuda é bem-vinda</p>
+            <p class="price">R$ 10,00</p>
+            <button class="add-to-cart" data-name="Pix Solidário" data-price="10.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/cafe.jpg">
+            <h4>Café no Aeroporto</h4>
+            <p>Ajudinha no café da manhã</p>
+            <p class="price">R$ 89,90</p>
+            <button class="add-to-cart" data-name="Café no Aeroporto" data-price="89.90">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/psc.jpg">
+            <h4>Psicólogos para os noivos</h4>
+            <p>Para não surtarem!</p>
+            <p class="price">R$ 259,97</p>
+            <button class="add-to-cart" data-name="Psicólogos para os noivos" data-price="259.97">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/corte.jpg">
+            <h4>Corte de cabelo</h4>
+            <p>Pro noivo de 6 meses...</p>
+            <p class="price">R$ 429,90</p>
+            <button class="add-to-cart" data-name="Corte de cabelo noivo" data-price="429.90">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/xuxa.jpg">
+            <h4>Show da Xuxa!</h4>
+            <p>Pagar o show da rainha</p>
+            <p class="price">R$ 324,90</p>
+            <button class="add-to-cart" data-name="Show da Xuxa" data-price="324.90">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/curso.jpg">
+            <h4>Curso de culinária</h4>
+            <p>Coitado do noivo!</p>
+            <p class="price">R$ 199,90</p>
+            <button class="add-to-cart" data-name="Curso de culinária" data-price="199.90">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/foto com os noivos.jpg">
+            <h4>Foto com os noivos</h4>
+            <p>Garantia de flash</p>
+            <p class="price">R$ 74,70</p>
+            <button class="add-to-cart" data-name="Foto com os noivos" data-price="74.70">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/calmante.jpg">
+            <h4>Calmante para os noivos</h4>
+            <p>Maracujina neles!</p>
+            <p class="price">R$ 80,00</p>
+            <button class="add-to-cart" data-name="Calmante para os noivos" data-price="80.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/filho.jpg">
+            <h4>Pergunta dos Filhos</h4>
+            <p>Taxa para perguntar "e os filhos?"</p>
+            <p class="price">R$ 480,00</p>
+            <button class="add-to-cart" data-name="Taxa Pergunta Filhos" data-price="480.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/buffet.jpg">
+            <h4>Fila do Buffet</h4>
+            <p>Garantir primeiro lugar na fila</p>
+            <p class="price">R$ 120,00</p>
+            <button class="add-to-cart" data-name="Primeiro lugar no buffet" data-price="120.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/spar.jpg">
+            <h4>Spa da Noiva</h4>
+            <p>Momento relaxante</p>
+            <p class="price">R$ 95,50</p>
+            <button class="add-to-cart" data-name="Spa da Noiva" data-price="95.50">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/calmante2.jpg">
+            <h4>Calmante do Casamento</h4>
+            <p>Para o grande dia</p>
+            <p class="price">R$ 79,90</p>
+            <button class="add-to-cart" data-name="Calmante dia do Casamento" data-price="79.90">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/netflix.jpg">
+            <h4>1 ano de Netflix</h4>
+            <p>Séries para o novo casal</p>
+            <p class="price">R$ 499,90</p>
+            <button class="add-to-cart" data-name="1 ano de Netflix" data-price="499.90">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/ar.jpg">
+            <h4>Cota do ar condicionado</h4>
+            <p>Para não torrar no calor</p>
+            <p class="price">R$ 140,00</p>
+            <button class="add-to-cart" data-name="Cota Ar Condicionado" data-price="140.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/picanha.jpg">
+            <h4>Vale picanha</h4>
+            <p>Churrasco garantido</p>
+            <p class="price">R$ 60,00</p>
+            <button class="add-to-cart" data-name="Vale Picanha" data-price="60.00">Adicionar</button>
+        </div>
+
+        <div class="store-item">
+            <img src="/static/img/duro dorme.jpg">
+            <h4>Se tá duro dorme</h4>
+            <p>Valor simbólico</p>
+            <p class="price">R$ 1,99</p>
+            <button class="add-to-cart" data-name="Se tá duro dorme" data-price="1.99">Adicionar</button>
+        </div>
+
+    </div>
+</section>
+
+    <section id="mensagens" class="comentarios">
+        <h2>Mensagens dos Convidados</h2>
+        <div id="comentariosContainer">
+            <p>Carregando comentários...</p>
+        </div>
     </section>
 
     <div id="floating-cart">
-        <i class="fa-solid fa-cart-shopping" style="color: white; font-size: 24px;"></i>
+        <i class="fa-solid fa-cart-shopping"></i>
         <span id="cart-count">0</span>
-    </div>
-<div id="cart-modal" class="modal">
-    <div class="modal-content bounce-in">
-        <h2>Meu Carrinho</h2>
-        <div id="cart-items"></div>
-        <div class="cart-footer" style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
-            <button id="close-cart" class="btn danger">Fechar</button>
-            <button id="btn-ir-checkout" class="btn primary">Presentear</button>
+    </div>  
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🛒 Meu Carrinho</h2>
+                <button id="close-cart" class="close-btn">&times;</button>
+            </div>
+            <div id="cart-items"></div>
+            <div class="cart-total-container">
+                <span>Total:</span>
+                <span id="cart-total-value">R$ 0,00</span>
+            </div>
+            <div class="modal-actions">
+                <button id="keep-shopping" class="btn-text">Continuar comprando</button>
+                <button id="btn-ir-checkout" class="btn primary">Presentear Agora</button>
+            </div>
         </div>
     </div>
-</div>
 
     <div id="checkout-modal" class="modal">
-        <div class="modal-content bounce-in">
+        <div class="modal-content">
             <h2>Dados para o Presente</h2>
-            <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Estes dados são necessários para gerar o pagamento seguro via PagBank.</p>
-            
             <form id="checkoutForm">
-                <div class="form-group">
-                    <input type="text" id="nome" placeholder="Nome Completo" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" id="email" placeholder="E-mail" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="cpf" placeholder="CPF (apenas números)" maxlength="14" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="telefone" placeholder="Telefone / WhatsApp" required>
-                </div>
-                
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button type="button" id="close-checkout" class="btn danger" style="flex:1">Voltar</button>
-                    <button type="submit" class="btn primary" style="flex:2">Gerar Pagamento</button>
+                <input type="text" id="nome" placeholder="Nome Completo" required class="form-input">
+                <input type="email" id="email" placeholder="E-mail" required class="form-input">
+                <input type="text" id="cpf" placeholder="CPF" maxlength="14" required class="form-input">
+                <input type="text" id="telefone" placeholder="Telefone" required class="form-input">
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button type="button" id="close-checkout" class="btn danger">Voltar</button>
+                    <button type="submit" class="btn primary">Gerar Pagamento</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="modalLoader" class="modal">
-        <div class="modal-content" style="text-align: center;">
-            <div class="spinner"></div>
-            <p>Processando seu presente...<br>Aguarde um instante.</p>
-        </div>
-    </div>
     <script src="/static/main.js"></script>
 </body>
 </html>
