@@ -31,4 +31,5 @@ COPY . .
 EXPOSE 5000
 
 # Comando FINAL de produção usando Gunicorn + WSGI
-CMD ["gunicorn", "wsgi:app", "--bind", "0.0.0.0:5000", "--workers", "3", "--timeout", "120"]
+#CMD ["gunicorn", "wsgi:app", "--bind", "0.0.0.0:5000", "--workers", "3", "--timeout", "120"]
+CMD ["python", "run.py"]

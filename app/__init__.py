@@ -7,6 +7,7 @@ from app.db import db
 from flask_mail import Mail
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_talisman import Talisman
+from app.models import Comentario, Pagamento, Retorno, Lista_presenca, NotificacaoPagBank
 
 load_dotenv()
 mail = Mail()
@@ -38,14 +39,12 @@ def create_app():
     db.init_app(app)
     mail.init_app(app)
 
-    # ===== Segurança =====
-    """ Talisman(
-        app,
-        content_security_policy=None,
-        force_https=True,
-        frame_options='DENY'
-    )
-    """
+    with app.app_context():
+        # IMPORTANTE: Importar o arquivo de models aqui dentro
+        # para garantir que o SQLAlchemy registre as tabelas
+        from app import models
+        from app.models import Comentario, Pagamento
+        db.create_all()
     # ===== ROTAS =====
     from app.routes import routes_bp
     app.register_blueprint(routes_bp)

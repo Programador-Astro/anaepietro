@@ -1,222 +1,206 @@
-// MAIN.JS FINAL — Bootstrap + Carrinho + Checkout + Comentários + Slider + Navbar
+/* ============================================================
+    1 — CONFIGURAÇÕES E ESTADO GLOBAL
+============================================================ */
+const STORAGE_KEY = "carrinho_ana_pietro";
+let carrinho = [];
 
-document.addEventListener("DOMContentLoaded", () => {
+// Formatação para Moeda Brasileira
+const formatBRL = (cents) => (cents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    /* ============================================================
-       SLIDE MOBILE (MOSTRAR 1 FOTO QUE TROCA AUTOMATICAMENTE)
-    ============================================================ */
-    (function configurarSlideMobile() {
-        if (window.innerWidth > 768) return; // só mobile
+/* ============================================================
+    2 — VALIDAÇÃO DE CPF (ALGORITMO OFICIAL)
+============================================================ */
+function validarCPF(cpf) {
+    cpf = cpf.replace(/[^\d]+/g, '');
+    if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
+    
+    let soma = 0, resto;
 
-        const inicio = document.querySelector("#inicio");
-        if (!inicio) return;
+    // Primeiro dígito verificador
+    for (let i = 1; i <= 9; i++) soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    resto = (soma * 10) % 11;
+    if ((resto === 10) || (resto === 11)) resto = 0;
+    if (resto !== parseInt(cpf.substring(9, 10))) return false;
 
-        const fotos = [
-            "https://i.imgur.com/uk81p37.jpeg",
-            "https://i.imgur.com/uirOYGT.jpeg",
-            "https://i.imgur.com/l6P4zFP.jpeg"
-        ];
+    // Segundo dígito verificador
+    soma = 0;
+    for (let i = 1; i <= 10; i++) soma = soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    resto = (soma * 10) % 11;
+    if ((resto === 10) || (resto === 11)) resto = 0;
+    if (resto !== parseInt(cpf.substring(10, 11))) return false;
 
-        let index = 0;
+    return true;
+}
 
-        // Remove fotos existentes (foto1, foto2, foto3)
-        inicio.querySelectorAll(".foto").forEach(f => f.remove());
+/* ============================================================
+    3 — LÓGICA DO CARRINHO (PERSISTÊNCIA E RENDERIZAÇÃO)
+============================================================ */
+function salvarCarrinho() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(carrinho));
+    atualizarBadge();
+}
 
-        // Cria camada única
+function carregarCarrinho() {
+    try { 
+        carrinho = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; 
+    } catch { 
+        carrinho = []; 
+    }
+    atualizarBadge();
+}
+
+function atualizarBadge() {
+    const totalItens = carrinho.reduce((acc, i) => acc + i.quantity, 0);
+    const badge = document.getElementById("cart-count");
+    if(badge) badge.textContent = totalItens;
+}
+
+function renderizarCarrinho() {
+    const container = document.getElementById("cart-items");
+    if (!container) return;
+    container.innerHTML = "";
+
+    if (carrinho.length === 0) {
+        container.innerHTML = `<p style="text-align:center; padding:20px;">Seu carrinho está vazio 😔</p>`;
+        return;
+    }
+
+    let totalGeral = 0;
+    carrinho.forEach(item => {
+        const subtotal = item.unit_amount * item.quantity;
+        totalGeral += subtotal;
+        
         const div = document.createElement("div");
-        div.classList.add("foto-mobile");
-        div.style.backgroundImage = `url(${fotos[0]})`;
-        inicio.appendChild(div);
+        div.className = "cart-item";
+        div.innerHTML = `
+            <div>
+                <strong>${item.name}</strong><br>
+                <small>${formatBRL(item.unit_amount)}</small>
+            </div>
+            <div class="qty-controls">
+                <button onclick="mudarQtd('${item.id}', -1)">-</button>
+                <span style="margin:0 8px">${item.quantity}</span>
+                <button onclick="mudarQtd('${item.id}', 1)">+</button>
+            </div>
+            <button class="delete-item" onclick="removerDoCarrinho('${item.id}')">&times;</button>
+        `;
+        container.appendChild(div);
+    });
 
-        setInterval(() => {
-            index = (index + 1) % fotos.length;
-            div.style.opacity = 0;
+    const totalEl = document.createElement("div");
+    totalEl.style.cssText = "text-align:right; margin-top:15px; font-weight:bold; border-top:1px solid #eee; padding-top:10px;";
+    totalEl.innerHTML = `Total: ${formatBRL(totalGeral)}`;
+    container.appendChild(totalEl);
+}
 
-            setTimeout(() => {
-                div.style.backgroundImage = `url(${fotos[index]})`;
-                div.style.opacity = 1;
-            }, 400);
-
-        }, 4500);
-    })();
-
-    /* ============================================================
-       BOOTSTRAP MODALS
-    ============================================================ */
-    const modalCarrinho = new bootstrap.Modal(document.getElementById("modalCarrinho"));
-    const modalCheckout = new bootstrap.Modal(document.getElementById("checkoutModal"));
-    const modalLoader = new bootstrap.Modal(document.getElementById("modalLoader"));
-
-    /* ============================================================
-       CARRINHO
-    ============================================================ */
-
-    const STORAGE_KEY = "carrinho_v1";
-    let carrinho = [];
-    let pagamentoId = null;
-
-    const cartCount = document.getElementById("cartCount");
-    const cartItemsContainer = document.getElementById("cartItems");
-    const totalEl = document.getElementById("totalCarrinho");
-    const btnPagar = document.getElementById("btnPagar");
-
-    const formatBRL = cents => (cents / 100).toFixed(2).replace(".", ",");
-    const parsePrecoBRL = v => Number(v.replace(/[^\d,]/g, "").replace(",", "."));
-    const gerarId = nome => nome.toLowerCase().replace(/\s+/g, "_").replace(/[^\w-]/g, "");
-
-    function carregarCarrinho() {
-        try { carrinho = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-        catch { carrinho = []; }
-        atualizarBadge();
-    }
-
-    function salvarCarrinho() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(carrinho));
-        atualizarBadge();
-    }
-
-    function adicionarAoCarrinho(nome, precoCentavos, thumb) {
-        const id = gerarId(nome);
-        const existente = carrinho.find(i => i.id === id);
-
-        if (existente) existente.quantity++;
-        else carrinho.push({ id, name: nome, unit_amount: Number(precoCentavos), quantity: 1, thumb });
-
+// Funções globais para botões dinâmicos
+window.mudarQtd = (id, delta) => {
+    const item = carrinho.find(i => i.id === id);
+    if (item) {
+        item.quantity += delta;
+        if (item.quantity <= 0) return removerDoCarrinho(id);
         salvarCarrinho();
         renderizarCarrinho();
     }
+};
 
-    function atualizarQuantidade(id, qtd) {
-        const item = carrinho.find(i => i.id === id);
-        if (!item) return;
-        item.quantity = qtd;
-        if (item.quantity <= 0) carrinho = carrinho.filter(i => i.id !== id);
-        salvarCarrinho();
-        renderizarCarrinho();
+window.removerDoCarrinho = (id) => {
+    carrinho = carrinho.filter(i => i.id !== id);
+    salvarCarrinho();
+    renderizarCarrinho();
+};
+
+/* ============================================================
+    4 — INICIALIZAÇÃO E EVENTOS DOM
+============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+    const inputCPF = document.getElementById("cpf");
+
+    // Máscara de CPF em tempo real
+    if (inputCPF) {
+        inputCPF.addEventListener("input", (e) => {
+            let v = e.target.value.replace(/\D/g, ""); // Remove não dígitos
+            if (v.length > 11) v = v.slice(0, 11);
+            
+            // Aplica os símbolos
+            v = v.replace(/(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/(\d{3})(\d)/, "$1.$2");
+            v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+            
+            e.target.value = v;
+        });
     }
 
-    function removerItem(id) {
-        carrinho = carrinho.filter(i => i.id !== id);
-        salvarCarrinho();
-        renderizarCarrinho();
-    }
+    carregarCarrinho();
 
-    function calcularTotal() {
-        return carrinho.reduce((acc, i) => acc + i.unit_amount * i.quantity, 0);
-    }
-
-    function atualizarBadge() {
-        cartCount.textContent = carrinho.reduce((acc, i) => acc + i.quantity, 0);
-    }
-
-    function renderizarCarrinho() {
-        cartItemsContainer.innerHTML = "";
-        if (carrinho.length === 0) {
-            cartItemsContainer.innerHTML = `<p class="empty">Seu carrinho está vazio 😔</p>`;
-            totalEl.textContent = "0,00";
-            return;
+    // Cronômetro do Casamento
+    setInterval(() => {
+        const diff = new Date("2026-01-10T00:00:00") - new Date();
+        if (diff > 0) {
+            document.getElementById("dias").innerText = Math.floor(diff / 864e5);
+            document.getElementById("horas").innerText = Math.floor((diff % 864e5) / 36e5);
+            document.getElementById("minutos").innerText = Math.floor((diff % 36e5) / 6e4);
+            document.getElementById("segundos").innerText = Math.floor((diff % 6e4) / 1000);
         }
+    }, 1000);
 
-        carrinho.forEach(item => {
-            const subtotal = item.unit_amount * item.quantity;
-            const div = document.createElement("div");
+    // Botões de Adicionar ao Carrinho
+    document.querySelectorAll(".add-to-cart").forEach(btn => {
+        btn.onclick = () => {
+            const { id, name, price } = btn.dataset;
+            const unit_amount = Math.round(parseFloat(price) * 100); 
+            const existente = carrinho.find(i => i.id === id);
 
-            div.classList.add(
-                "d-flex", "justify-content-between",
-                "align-items-start", "border-bottom", "py-2"
-            );
+            if (existente) existente.quantity++;
+            else carrinho.push({ id, name, unit_amount, quantity: 1 });
 
-            div.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <img src="${item.thumb}" style="width:50px;height:50px;border-radius:6px;margin-right:10px;">
-                    <div>
-                        <strong>${item.name}</strong><br>
-                        <small>R$ ${formatBRL(item.unit_amount)}</small>
-                    </div>
-                </div>
+            salvarCarrinho();
+            
+            // Efeito visual no ícone do carrinho
+            const floating = document.getElementById("floating-cart");
+            floating.classList.add("cart-pulse");
+            setTimeout(() => floating.classList.remove("cart-pulse"), 300);
+            
+            btn.innerText = "Adicionado!";
+            setTimeout(() => btn.innerText = "Adicionar", 800);
+        };
+    });
 
-                <div class="text-end">
-                    <div class="d-flex justify-content-end mb-1">
-                        <button class="btn btn-sm btn-outline-secondary decrease" data-id="${item.id}">-</button>
-                        <span class="px-2">${item.quantity}</span>
-                        <button class="btn btn-sm btn-outline-secondary increase" data-id="${item.id}">+</button>
-                    </div>
+    // Modais
+    const modalCart = document.getElementById("cart-modal");
+    const modalCheckout = document.getElementById("checkout-modal");
+    const modalLoader = document.getElementById("modalLoader");
 
-                    <strong>R$ ${formatBRL(subtotal)}</strong><br>
-                    <button class="btn btn-sm btn-danger mt-1 remove" data-id="${item.id}">🗑️</button>
-                </div>
-            `;
-
-            cartItemsContainer.appendChild(div);
-        });
-
-        totalEl.textContent = formatBRL(calcularTotal());
-
-        document.querySelectorAll(".increase").forEach(btn => {
-            btn.onclick = () => atualizarQuantidade(btn.dataset.id,
-                carrinho.find(i => i.id === btn.dataset.id).quantity + 1
-            );
-        });
-
-        document.querySelectorAll(".decrease").forEach(btn => {
-            btn.onclick = () => atualizarQuantidade(btn.dataset.id,
-                carrinho.find(i => i.id === btn.dataset.id).quantity - 1
-            );
-        });
-
-        document.querySelectorAll(".remove").forEach(btn => {
-            btn.onclick = () => removerItem(btn.dataset.id);
-        });
-    }
-
-    function ligarBotoesAdicionar() {
-        document.querySelectorAll(".add-to-cart").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const card = btn.closest(".card");
-                const nome = card.querySelector("h4").textContent;
-                const preco = parsePrecoBRL(card.querySelector(".price").textContent);
-                const thumb = card.querySelector("img").src;
-
-                adicionarAoCarrinho(nome, preco * 100, thumb);
-
-                btn.textContent = "Adicionado ✔️";
-                btn.classList.add("btn-added");
-                setTimeout(() => {
-                    btn.textContent = "Adicionar";
-                    btn.classList.remove("btn-added");
-                }, 800);
-            });
-        });
-    }
-
-    document.getElementById("cartIcon").addEventListener("click", () => {
+    document.getElementById("floating-cart").onclick = () => {
         renderizarCarrinho();
-        modalCarrinho.show();
-    });
+        modalCart.style.display = "flex";
+    };
 
-    btnPagar.addEventListener("click", () => {
+    document.getElementById("close-cart").onclick = () => modalCart.style.display = "none";
+    document.getElementById("close-checkout").onclick = () => modalCheckout.style.display = "none";
+
+    document.getElementById("btn-ir-checkout").onclick = () => {
         if (carrinho.length === 0) return alert("Seu carrinho está vazio!");
-        modalCarrinho.hide();
-        setTimeout(() => modalCheckout.show(), 300);
-    });
+        modalCart.style.display = "none";
+        modalCheckout.style.display = "flex";
+    };
 
     /* ============================================================
-       CHECKOUT — CAPTURA DOS DADOS
+        5 — FINALIZAÇÃO (PAGBANK)
     ============================================================ */
-
-    // 🔥 CORREÇÃO — declarando os inputs
-    const nomeInput = document.getElementById("nome");
-    const emailInput = document.getElementById("email");
-    const cpfInput = document.getElementById("cpf");
-
-    document.getElementById("checkoutForm").addEventListener("submit", async e => {
+    document.getElementById("checkoutForm").onsubmit = async (e) => {
         e.preventDefault();
 
-        const nome = nomeInput.value.trim();
-        const email = emailInput.value.trim();
-        const cpf = cpfInput.value.replace(/\D/g, "");
+        const nome = document.getElementById("nome").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const cpfRaw = document.getElementById("cpf").value.replace(/\D/g, "");
+        const telefone = document.getElementById("telefone").value.trim();
 
-        if (!nome || !email || !cpf) return alert("Preencha tudo!");
+        // Validação Final antes do Envio
+        if (!validarCPF(cpfRaw)) {
+            alert("CPF Inválido! Por favor, confira os dados.");
+            return;
+        }
 
         const items = carrinho.map(i => ({
             name: i.name,
@@ -224,84 +208,30 @@ document.addEventListener("DOMContentLoaded", () => {
             unit_amount: i.unit_amount
         }));
 
-        const total = calcularTotal() / 100;
+        const total = carrinho.reduce((acc, i) => acc + (i.unit_amount * i.quantity), 0) / 100;
 
-        modalCheckout.hide();
-        modalLoader.show();
+        modalCheckout.style.display = "none";
+        modalLoader.style.display = "flex";
 
         try {
             const res = await fetch("/pagar", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nome, email, cpf, items, total })
+                body: JSON.stringify({ nome, email, cpf: cpfRaw, telefone, items, total })
             });
 
             const data = await res.json();
 
             if (res.ok && data.checkout_url) {
-                pagamentoId = data.pagamento_id;
                 localStorage.removeItem(STORAGE_KEY);
                 window.location.href = data.checkout_url;
-            } else alert(data.error || "Erro no pagamento");
-
-        } catch {
-            alert("Erro de conexão");
-        }
-
-        modalLoader.hide();
-    });
-
-    /* ============================================================
-       COMENTÁRIOS
-    ============================================================ */
-    async function carregarComentarios() {
-        const cont = document.getElementById("comentariosContainer");
-        cont.innerHTML = "<p>Carregando...</p>";
-
-        try {
-            const res = await fetch("/comentarios");
-            const comentarios = await res.json();
-            cont.innerHTML = "";
-
-            if (!comentarios.length) {
-                cont.innerHTML = "<p>Nenhum comentário ainda 💌</p>";
-                return;
+            } else {
+                alert(data.error || "Erro ao processar presente.");
+                modalLoader.style.display = "none";
             }
-
-            comentarios.forEach(c => {
-                const div = document.createElement("div");
-                div.classList.add("comentario", "mb-3", "p-3", "bg-light", "rounded");
-                div.innerHTML = `<strong>${c.convidado_nome}</strong><br>${c.convidado_comentario}`;
-                cont.appendChild(div);
-            });
-
-        } catch {
-            cont.innerHTML = "<p>Erro ao carregar comentários 😔</p>";
+        } catch (err) {
+            alert("Erro de conexão. Tente novamente.");
+            modalLoader.style.display = "none";
         }
-    }
-
-    /* ============================================================
-       NAVBAR MOBILE
-    ============================================================ */
-    const menuToggle = document.getElementById("menu-toggle");
-    const navLinks = document.getElementById("nav-links");
-
-    menuToggle.addEventListener("click", () => {
-        navLinks.classList.toggle("ativo");
-        menuToggle.classList.toggle("ativo");
-    });
-
-    navLinks.querySelectorAll("a").forEach(l =>
-        l.addEventListener("click", () => {
-            navLinks.classList.remove("ativo");
-            menuToggle.classList.remove("ativo");
-        })
-    );
-
-    /* ============================================================
-       INICIALIZAÇÃO
-    ============================================================ */
-    carregarCarrinho();
-    ligarBotoesAdicionar();
-    carregarComentarios();
+    };
 });
