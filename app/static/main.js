@@ -2,7 +2,32 @@ const STORAGE_KEY = "carrinho_ana_pietro";
 let carrinho = [];
 
 const formatBRL = (cents) => (cents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+// Máscara de CPF (000.000.000-00)
+function mascaraCPF(value) {
+    return value
+        .replace(/\D/g, "") // Remove tudo que não é dígito
+        .replace(/(\d{3})(\d)/, "$1.$2") // Coloca ponto após os primeiros 3 dígitos
+        .replace(/(\d{3})(\d)/, "$1.$2") // Coloca ponto após os segundos 3 dígitos
+        .replace(/(\d{3})(\d{1,2})$/, "$1-$2") // Coloca hífen antes dos últimos 2 dígitos
+        .substring(0, 14); // Limita o tamanho
+}
 
+// Validação Real de CPF (Algoritmo oficial)
+function validarCPF(cpf) {
+    cpf = cpf.replace(/[^\d]+/g, '');
+    if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
+    let soma = 0, resto;
+    for (let i = 1; i <= 9; i++) soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    resto = (soma * 10) % 11;
+    if ((resto == 10) || (resto == 11)) resto = 0;
+    if (resto != parseInt(cpf.substring(9, 10))) return false;
+    soma = 0;
+    for (let i = 1; i <= 10; i++) soma = soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    resto = (soma * 10) % 11;
+    if ((resto == 10) || (resto == 11)) resto = 0;
+    if (resto != parseInt(cpf.substring(10, 11))) return false;
+    return true;
+}
 // --- COMENTÁRIOS ---
 async function carregarComentarios() {
     const cont = document.getElementById("comentariosContainer");
@@ -100,6 +125,37 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
     setInterval(timer, 1000); timer();
+
+    // Seleção dos elementos do Checkout
+    const cpfInput = document.getElementById("cpf");
+    const checkoutForm = document.getElementById("checkoutForm");
+
+    // Aplicar Máscara enquanto digita
+    cpfInput.addEventListener("input", (e) => {
+        e.target.value = mascaraCPF(e.target.value);
+    });
+
+    // Validar no envio do formulário
+    checkoutForm.onsubmit = async (e) => {
+        e.preventDefault();
+        
+        const cpfValue = cpfInput.value;
+
+        if (!validarCPF(cpfValue)) {
+            alert("⚠️ Por favor, insira um CPF válido.");
+            cpfInput.style.borderColor = "red";
+            cpfInput.focus();
+            return;
+        }
+
+        cpfInput.style.borderColor = "#ddd";
+        
+        // Se chegar aqui, o CPF é válido. Prosseguir com o pagamento:
+        console.log("CPF Válido! Iniciando checkout...");
+        // Adicione aqui a chamada para sua API de pagamento
+        alert("Processando seu presente... ❤️");
+    };
+
 
     // LÓGICA DE VÍDEO (Apenas Mobile)
     const video = document.getElementById("introVideo");
