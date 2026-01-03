@@ -126,21 +126,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // BOTÃO ADICIONAR (Animação de Pulinho)
     document.querySelectorAll(".add-to-cart").forEach(btn => {
-        btn.onclick = () => {
-            const {id, name, price} = btn.dataset;
-            const item = carrinho.find(i => i.id === id);
-            if(item) item.quantity++; 
-            else carrinho.push({id, name, unit_amount: parseFloat(price) * 100, quantity: 1});
-            
-            salvarCarrinho();
-            renderizarCarrinho();
+    btn.onclick = () => {
+        // Agora pegamos o name também para servir de ID caso não tenha um
+        const {id, name, price} = btn.dataset;
+        
+        // Usamos o 'name' como chave única se o 'id' estiver vazio no HTML
+        const itemId = id || name; 
 
-            const icon = document.getElementById("floating-cart");
-            icon.classList.remove("cart-pop");
-            void icon.offsetWidth;
-            icon.classList.add("cart-pop");
-        };
-    });
+        const item = carrinho.find(i => i.id === itemId);
+
+        if(item) {
+            item.quantity++; 
+        } else {
+            // Importante: multiplicar por 100 pois seu sistema usa centavos
+            carrinho.push({
+                id: itemId, 
+                name: name, 
+                unit_amount: Math.round(parseFloat(price) * 100), 
+                quantity: 1
+            });
+        }
+        
+        salvarCarrinho();
+        renderizarCarrinho();
+
+        // Animação do ícone
+        const icon = document.getElementById("floating-cart");
+        icon.classList.remove("cart-pop");
+        void icon.offsetWidth; // truque para resetar animação CSS
+        icon.classList.add("cart-pop");
+    };
+});
 
     // Modais
     const cartM = document.getElementById("cart-modal");
